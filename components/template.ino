@@ -59,7 +59,9 @@ void loop() {
    * such as switching on lights, etc
    * to show if the circuit is (in)correct
    */
-  //This one does nothing
+  
+  //Below replaced with led switching code, if applicable
+  //<LED>
   
   /*
    * Pass along the output upstream

@@ -23,6 +23,9 @@ serial_pins = {
 #Reset light pin
 reset_pin = 13
 
+#LED light pin
+led_pin = 6
+
 #Baud rate
 baud_rate = 4800
 
@@ -40,7 +43,7 @@ elements = [
                   "name" : "Terminator" ,
                   "code" : "TRM" ,
                   "serial" : 2 ,
-                  "led" : False
+                  "led" : True
               } ,
               {
                   "name" : "3'UTR" ,
@@ -82,23 +85,47 @@ elements = [
 
 ##############################
 ##############################
+# Python imports
+
+import os
+
+##############################
+##############################
+# Importing templates
+
+# Main template
+with open( "template.ino" , "r" ) as template_file :
+    template_master = template_file.read()
+
+# LED switching code
+with open( "led_snippet.ino" , "r" ) as template_file :
+    led_code = template_file.read()
+
+##############################
+##############################
 # To be used in #define directives
 
 definitions = {
                     "baudRate" : str( baud_rate ) ,
                     "transferLatency" : str( transfer_latency ) ,
                     "responseWait" : str( response_wait ) ,
-                    "resetLight" : str( reset_pin )
+                    "resetLight" : str( reset_pin ) ,
+                    "ledPin" : str( led_pin )
               }
 
 ##############################
 ##############################
+# Tags to be replaced with code
 
-import os
+replacements = {
+                 "led" : {
+                             "tag" : "//<LED>" ,
+                             "code" : led_code
+                         }
+               }
 
-#Import template
-with open( "template.txt" , "r" ) as template_file :
-    template_master = template_file.read()
+##############################
+##############################
 
 #For each element
 for element in elements :
@@ -125,6 +152,14 @@ for element in elements :
     #Add include directives
     for include in includes :
         template = "#include <{}.h>\n\n".format( include ) + template
+
+    #Replace any tags with code
+    if element[ "led" ] :
+        print( "Will replace" )
+        print( replacements["led"] )
+        print( replacements["led"]["tag"] )
+        print( replacements["led"]["code"] )
+        template = template.replace( replacements[ "led" ][ "tag" ] , replacements[ "led" ][ "code" ] )
 
     #Create the folder if required
     if not os.path.exists( element[ "code" ] ) :

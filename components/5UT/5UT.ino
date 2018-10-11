@@ -1,20 +1,24 @@
 #include <SoftwareSerial.h>
 
-#define softwareSerialTx0 5
-
 #define softwareSerialRx0 4
 
-#define baudRate 4800
+#define softwareSerialTx0 5
 
-#define unitId 5UT
+#define ledPin 6
 
 #define responseWait 1000
 
 #define transferLatency 5
 
+#define baudRate 4800
+
+#define unitId 5UT
+
 #define resetLight 13
 
 SoftwareSerial upstreamSerial( softwareSerialRx0 , softwareSerialTx0 ) ;
+
+
 int charIndex ;
 String passData = "" ;
 String thisConnection ;    
@@ -75,7 +79,9 @@ void loop() {
    * such as switching on lights, etc
    * to show if the circuit is (in)correct
    */
-  //This one does nothing
+  
+  //Below replaced with led switching code, if applicable
+  //<LED>
   
   /*
    * Pass along the output upstream

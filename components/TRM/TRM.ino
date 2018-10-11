@@ -1,20 +1,23 @@
 #include <SoftwareSerial.h>
 
-#define softwareSerialTx0 5
-
 #define softwareSerialRx0 4
 
-#define baudRate 4800
+#define softwareSerialTx0 5
 
-#define unitId "TRM"
+#define ledPin 6
 
 #define responseWait 1000
 
 #define transferLatency 5
 
+#define baudRate 4800
+
+#define unitId TRM
+
 #define resetLight 13
 
 SoftwareSerial upstreamSerial( softwareSerialRx0 , softwareSerialTx0 ) ;
+
 int charIndex ;
 String passData = "" ;
 String thisConnection ;    
@@ -75,7 +78,42 @@ void loop() {
    * such as switching on lights, etc
    * to show if the circuit is (in)correct
    */
-  //This one does nothing
+  
+  //Below replaced with led switching code, if applicable
+    //Copy the data in
+  directives = passData ;
+  
+  while( directives.indexOf( ";" ) > 0 ) { // 1
+
+    //Find the first occurence of ";" in directives
+    charIndex = directives.indexOf( ";" ) ;
+
+    //While there is still ";" in directives
+    if( charIndex > 0 ) { // 2
+
+      //Get the first directive in the string
+      directive = directives.substring( 0 , charIndex ) ;
+
+      //If that directive contains this unit's id
+      if( directive.indexOf( unitId ) >= 0 ) { // 3
+
+        //If the directive is to turn on the light, turn it on
+        if( directive.indexOf( "ON" ) > 0 ) { // 4
+          digitalWrite( ledPin , HIGH ) ;
+        } else {  // 4
+          //Otherwise, ensure that the light is off
+          digitalWrite( ledPin , LOW ) ;
+        } // 4
+
+      } // 3
+      
+    } // 2
+
+    //Chop off the first directive, because it has been checked
+    directives = directives.substring( charIndex ) ;
+
+  } // 1
+
   
   /*
    * Pass along the output upstream
@@ -125,7 +163,7 @@ void loop() {
      * Generate a string this unitId-upstream unitId
      * to add to the list of connections
      */
-    thisConnection = unitId + String("-") + passData.substring( 0 , charIndex ) ;
+    thisConnection = unitId + "-" + passData.substring( 0 , charIndex ) ;
     
     /*
      * Add this unitId to the start of the string
@@ -143,7 +181,7 @@ void loop() {
      * so it should assume that it is furthest from
      * the base in this part of the tree
      */
-     passData = unitId + String(";") ;
+     passData = unitId + ";" ;
      
   }
   
