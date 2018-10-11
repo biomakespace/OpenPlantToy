@@ -115,6 +115,44 @@ definitions = {
 
 ##############################
 ##############################
+# Variable declarations
+
+#Always required
+required_variables = [
+                        {
+                            "type" : "int" ,
+                            "name" : "charIndex"
+                        } ,
+                        {
+                            "type" : "String" ,
+                            "name" : "passData"
+                        } ,
+                        {
+                            "type" : "String" ,
+                            "name" : "thisConnection"
+                        } ,
+                        {
+                            "type" : "bool" ,
+                            "name" : "confirmReceived"
+                        }
+                     ]
+
+#Conditionally required
+conditional_variables = {
+                            "led" : [
+                                        {
+                                            "type" : "String" ,
+                                            "name" : "directive"
+                                        } ,
+                                        {
+                                            "type" : "String" ,
+                                            "name" : "directives"
+                                        }
+                                    ]
+                        }
+
+##############################
+##############################
 # Tags to be replaced with code
 
 replacements = {
@@ -137,8 +175,17 @@ for element in elements :
     for i in range( element[ "serial"] -1 ) :
         template = "SoftwareSerial upstreamSerial( {} , {} ) ;\n\n".format( "softwareSerialRx{}".format(i) , "softwareSerialTx{}".format(i) ) + template 
 
+    #Required variable declarations
+    for variable in required_variables :
+        template = "{} {} ;\n".format( variable[ "type" ] , variable[ "name" ] ) + template
+
+    #Conditional variable declarations
+    if element[ "led" ] :
+        for variable in conditional_variables[ "led" ] :
+            template = "{} {} ;\n".format( variable[ "type" ] , variable[ "name" ] ) + template
+
     #Add define for unitId
-    definitions[ "unitId" ] = element[ "code" ]
+    definitions[ "unitId" ] = "\"" + element[ "code" ] + "\"" 
 
     #Add define directives
     for key , value in definitions.items() :
@@ -147,7 +194,7 @@ for element in elements :
     #Define directives for software serial ports
     for i in range( element[ "serial" ] - 1 ) :
         for key , value in serial_pins[ str(i) ].items() :
-            template = "#define {} {}\n\n".format( "softwareSerial{}{}".format( key , i ) , value ) + template
+            template = "#define {} {}\n".format( "softwareSerial{}{}".format( key , i ) , value ) + template
 
     #Add include directives
     for include in includes :
@@ -155,10 +202,6 @@ for element in elements :
 
     #Replace any tags with code
     if element[ "led" ] :
-        print( "Will replace" )
-        print( replacements["led"] )
-        print( replacements["led"]["tag"] )
-        print( replacements["led"]["code"] )
         template = template.replace( replacements[ "led" ][ "tag" ] , replacements[ "led" ][ "code" ] )
 
     #Create the folder if required

@@ -1,28 +1,25 @@
 #include <SoftwareSerial.h>
 
 #define softwareSerialRx0 4
-
 #define softwareSerialTx0 5
-
-#define ledPin 6
+#define transferLatency 5
 
 #define responseWait 1000
 
-#define transferLatency 5
-
-#define baudRate 4800
-
-#define unitId 5UT
+#define unitId "5UT"
 
 #define resetLight 13
 
+#define baudRate 4800
+
+#define ledPin 6
+
+bool confirmReceived ;
+String thisConnection ;
+String passData ;
+int charIndex ;
 SoftwareSerial upstreamSerial( softwareSerialRx0 , softwareSerialTx0 ) ;
 
-
-int charIndex ;
-String passData = "" ;
-String thisConnection ;    
-bool confirmReceived ;
 
 void setup() {
   
@@ -131,7 +128,7 @@ void loop() {
      * Generate a string this unitId-upstream unitId
      * to add to the list of connections
      */
-    thisConnection = unitId + "-" + passData.substring( 0 , charIndex ) ;
+    thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) ;
     
     /*
      * Add this unitId to the start of the string
@@ -149,7 +146,7 @@ void loop() {
      * so it should assume that it is furthest from
      * the base in this part of the tree
      */
-     passData = unitId + ";" ;
+     passData = unitId + String( ";" ) ;
      
   }
   
