@@ -2,6 +2,7 @@
 #Needed for serial communication
 #with the base unit
 import serial
+import time
 
 #Converts a list of connections
 #as a string of the following format
@@ -100,15 +101,16 @@ def tree_match( tree_1 , tree_2 ) :
 
         
 
-serial1 = serial.Serial( "/dev/ttyUSB0" , 4800 , timeout=1 )
+serial1 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=1 )
 #serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
 print( serial1.name )
 
-correct_circuit = [ [ "1" , "REP" ] , ] 
+correct_circuit = [ [ "TRM" , "REP" ] , [ "REP" , "PRM" ] ] 
 
 response = "REP,OFF;"
 
 while True :
+    #time.sleep(0.1)
     try :
         characters = serial1.read(50).decode( "utf-8" )
     except UnicodeDecodeError :

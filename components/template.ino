@@ -1,6 +1,11 @@
 
 void setup() {
   
+  /*
+   * Assume initially that something is upstream
+   */
+  isUpstream = true ;
+
   /* 
    *  Open serial communication 
    *  between nano and downstream source
@@ -63,10 +68,27 @@ void loop() {
    */
   upstreamSerial.print( passData ) ;
   
-  /*
-   * Wait for confirmation of receipt
-   */
-  delay( responseWait ) ;
+   /*
+    * Wait for response
+    * only if we think something is attached upstream
+    */
+   waitCounter = 0 ;
+   while( !upstreamSerial.available() & isUpstream & ( waitCounter < responseWait ) ) {
+     delay( 1 ) ;
+     waitCounter++ ;
+   }
+ 
+   // If nothing received
+   if( !upstreamSerial.available() ) {
+     // Assume nothing is connected upstream
+     isUpstream = false ;
+   } else {
+     /* 
+      * If something received
+      * something is connected upstream 
+      */
+     isUpstream = true ;
+   }
 
   /*
    * Get reply, if it exists

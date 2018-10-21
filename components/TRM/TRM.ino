@@ -2,20 +2,22 @@
 
 #define softwareSerialRx0 4
 #define softwareSerialTx0 5
+#define ledPin 6
+
+#define resetLight 13
+
 #define transferLatency 5
+
+#define baudRate 4800
 
 #define responseWait 1000
 
 #define unitId "TRM"
 
-#define resetLight 13
-
-#define baudRate 4800
-
-#define ledPin 6
-
 String directives ;
 String directive ;
+int waitCounter ;
+bool isUpstream ;
 bool confirmReceived ;
 String thisConnection ;
 String passData ;
@@ -25,6 +27,11 @@ SoftwareSerial upstreamSerial( softwareSerialRx0 , softwareSerialTx0 ) ;
 
 void setup() {
   
+  /*
+   * Assume initially that something is upstream
+   */
+  isUpstream = true ;
+
   /* 
    *  Open serial communication 
    *  between nano and downstream source
@@ -120,10 +127,27 @@ void loop() {
    */
   upstreamSerial.print( passData ) ;
   
-  /*
-   * Wait for confirmation of receipt
-   */
-  delay( responseWait ) ;
+   /*
+    * Wait for response
+    * only if we think something is attached upstream
+    */
+   waitCounter = 0 ;
+   while( !upstreamSerial.available() & isUpstream & ( waitCounter < responseWait ) ) {
+     delay( 1 ) ;
+     waitCounter++ ;
+   }
+ 
+   // If nothing received
+   if( !upstreamSerial.available() ) {
+     // Assume nothing is connected upstream
+     isUpstream = false ;
+   } else {
+     /* 
+      * If something received
+      * something is connected upstream 
+      */
+     isUpstream = true ;
+   }
 
   /*
    * Get reply, if it exists

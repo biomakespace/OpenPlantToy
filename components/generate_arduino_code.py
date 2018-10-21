@@ -134,6 +134,14 @@ required_variables = [
                         {
                             "type" : "bool" ,
                             "name" : "confirmReceived"
+                        } ,
+                        {
+                            "type" : "bool" ,
+                            "name" : "isUpstream"
+                        } ,
+                        {
+                            "type" : "int" ,
+                            "name" : "waitCounter"
                         }
                      ]
 
