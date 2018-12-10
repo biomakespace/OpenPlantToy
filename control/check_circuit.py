@@ -99,36 +99,57 @@ def tree_match( tree_1 , tree_2 ) :
             
     return is_match
 
-        
 
-serial1 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=1 )
+
+# Inertia + 1 = number of incorrect responses before turning off the light
+inertia = 2
+
+serial1 = serial.Serial( "/dev/ttyUSB0" , 4800 , timeout=1 )
 #serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
 print( serial1.name )
 
-correct_circuit = [ [ "TRM" , "REP" ] , [ "REP" , "PRM" ] ] 
+correct_circuit = [
+                    [ "TRM" , "3UT" ] ,
+                    [ "3UT" , "FRT" ] ,
+                    [ "FRT" , "5UT" ] ,
+                    [ "5UT" , "PRM" ] ,
+                    [ "PRM" , "REP" ] #,
+                    #[ "REP" , "DRP" ]
+                  ] 
 
 response = "REP,OFF;"
 
+#Count how many incorrect responses we've had since last correct one
+incorrect = 0
+
 while True :
-    #time.sleep(0.1)
+    #Try to read in the response
     try :
         characters = serial1.read(50).decode( "utf-8" )
+        #If it fails, assume empty response
     except UnicodeDecodeError :
         characters = ""
-    print( characters )
+    #Print response
+    print( "Raw response:" , characters )
     if( ";" in characters ) :
         characters = characters.split( ";" ).pop()
-        print( characters )
+        print( "Remove last device name: " , characters )
+    print( response )
+    print( response.encode( "ascii" ) )
     serial1.write( response.encode( "ascii" ) )
     try :
         connections = parse_tree( characters )
-        print( connections )
+        print( "Pairwise connections:" , connections )
         if( tree_match( connections , correct_circuit ) ) :
+            incorrect = 0
             print( "MATCH" )
-            response = "REP,ON;"
+            response = "TRM,ON;"
         else :
-            print( "NOT MATCH" )
-            response = "REP,OFF;"
+            incorrect += 1
+            print( "NO MATCH" )
+            if incorrect > inertia :
+                response = "TRM,OFF;"
     except Exception as e :
         pass
+    print( "###############" )
     
