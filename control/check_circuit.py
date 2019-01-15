@@ -98,35 +98,114 @@ def tree_match( tree_1 , tree_2 ) :
             
     return is_match
 
-        
 
+
+# inertia + 1 = number of incorrect responses before turning off the light
+inertia = 2
+
+# Open the serial port on which the circuit component is connected
 serial1 = serial.Serial( "/dev/ttyUSB0" , 4800 , timeout=1 )
 #serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
+# Print the name of the serial port, debug information
 print( serial1.name )
 
-correct_circuit = [ [ "1" , "REP" ] , ] 
+# The internal circuit representation of the
+# circuit which is "correct"
+correct_circuit = [
+                    [ "TRM" , "3UT" ] ,
+                    [ "3UT" , "FRT" ] ,
+                    [ "FRT" , "5UT" ] ,
+                    [ "5UT" , "PRM" ] ,
+                    [ "PRM" , "REP" ] #,
+                    #[ "REP" , "DRP" ]
+                  ] 
 
-response = "REP,OFF;"
+# Initial message to circuit, assuming incorrect circuit
+response = "TRM,OFF;"
 
+# Count how many incorrect responses we've had since last correct one
+incorrect = 0
+
+# Forever
 while True :
+    
+    # Try to read in the response
     try :
         characters = serial1.read(50).decode( "utf-8" )
+        # If it fails, assume empty response
     except UnicodeDecodeError :
         characters = ""
-    print( characters )
+        
+    # Print response, debug information
+    print( "Raw response:" , characters )
+
+    # If we have received a well formed response,
+    # the first part should be the unitId of the most
+    # downstream followed by a semicolon
+    # This script has no use for this information, so ditch it
     if( ";" in characters ) :
         characters = characters.split( ";" ).pop()
-        print( characters )
+        # Report ditched information for debug
+        print( "Remove last device name: " , characters )
+
+    # Print response for debug
+    print( response )
+    print( response.encode( "ascii" ) )
+
+    # Send the response to the connected component
     serial1.write( response.encode( "ascii" ) )
+
+    # I think the main point of failure would be
+    # the first line, the call to parse_tree, if
+    # the string reported by the circuit is not well formed
+    # Potentially the tree_match call could produce an error
+    # if one of the arrays of connections is ill-formed
+    # but this should either be very unlikely to happen
+    # or happen every time if the "correct" circuit
+    # is not set up correctly at the start
     try :
+
+        # Attempt to convert the received string
+        # into the internal circuit respresentation
         connections = parse_tree( characters )
-        print( connections )
+
+        # Print result, debug information
+        print( "Pairwise connections:" , connections )
+
+        # Check if reported circuit matches correct circuit
         if( tree_match( connections , correct_circuit ) ) :
+
+            # If so reset number of incorrect circuits reported
+            incorrect = 0
+
+            # Confirm match, debug information
             print( "MATCH" )
-            response = "REP,ON;"
+
+            # Set response for correct circuit
+            response = "TRM,ON;"
+
+        # If reported circuit does not match the correct circuit
         else :
-            print( "NOT MATCH" )
-            response = "REP,OFF;"
+
+            # Increment number of incorrect responses seen
+            incorrect += 1
+
+            # Report lack of match, debug information
+            print( "NO MATCH" )
+
+            # If there have been too many incorrect responses,
+            # set the response for an incorrect circuit
+            if incorrect > inertia :
+                response = "TRM,OFF;"
+
+    # Catch all exceptions and do nothing with them, for now
+    # To be improved in the future
+    # Note that this means that the response sent to the circuit on
+    # the next iteration of the loop, will be the same as the one
+    # send earlier in this iteration
     except Exception as e :
         pass
+
+    # Separator between loops, for better legibility of debug information
+    print( "###############" )
     

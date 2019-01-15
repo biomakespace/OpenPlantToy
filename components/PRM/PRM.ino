@@ -1,43 +1,40 @@
-
-/*
- * This is the unique unit
- * identifier for this unit
- * This defines what role
- * it plays in the
- * biological circuit
- */
-#define unitId 1
-
 #include <SoftwareSerial.h>
 
-int charIndex ;
-String passData = "" ;
-String thisConnection ;    
-bool confirmReceived ;
+#define softwareSerialRx0 4
+#define softwareSerialTx0 5
+#define ledPin 6
 
-// Receive pin of the software serial port
-#define softwareSerialRx 4
-
-// Transmit pin of the software serial port
-#define softwareSerialTx 5
-
-// Pin on which the reset light is found
 #define resetLight 13
 
+#define transferLatency 5
 
-/*
- * 4 (D4) is Rx
- * 5 (D5) is Tx
- */
-SoftwareSerial upstreamSerial( softwareSerialRx , softwareSerialTx ) ;
+#define baudRate 4800
+
+#define responseWait 1000
+
+#define unitId "PRM"
+
+int waitCounter ;
+bool isUpstream ;
+bool confirmReceived ;
+String thisConnection ;
+String passData ;
+int charIndex ;
+SoftwareSerial upstreamSerial( softwareSerialRx0 , softwareSerialTx0 ) ;
+
 
 void setup() {
   
+  /*
+   * Assume initially that something is upstream
+   */
+  isUpstream = true ;
+
   /* 
    *  Open serial communication 
    *  between nano and downstream source
    */
-  Serial.begin( 4800 ) ;
+  Serial.begin( baudRate ) ;
   
   while( !Serial ) {
     ; //Pass
@@ -47,7 +44,7 @@ void setup() {
    * Open serial communication
    * between nano and upstream source
    */
-  upstreamSerial.begin( 4800 ) ;
+  upstreamSerial.begin( baudRate ) ;
   
 }
 
@@ -75,7 +72,7 @@ void loop() {
     passData = passData + char( Serial.read() ) ;
     
     //Account for latency in transfer
-    delay(5) ;
+    delay( transferLatency ) ;
     
     digitalWrite( resetLight , LOW ) ;
   }
@@ -86,17 +83,36 @@ void loop() {
    * such as switching on lights, etc
    * to show if the circuit is (in)correct
    */
-  //This one does nothing
+  
+  //Below replaced with led switching code, if applicable
+  //<LED>
   
   /*
    * Pass along the output upstream
    */
   upstreamSerial.print( passData ) ;
   
-  /*
-   * Wait for confirmation of receipt
-   */
-  delay( 1000 ) ;
+   /*
+    * Wait for response
+    * only if we think something is attached upstream
+    */
+   waitCounter = 0 ;
+   while( !upstreamSerial.available() & isUpstream & ( waitCounter < responseWait ) ) {
+     delay( 1 ) ;
+     waitCounter++ ;
+   }
+ 
+   // If nothing received
+   if( !upstreamSerial.available() ) {
+     // Assume nothing is connected upstream
+     isUpstream = false ;
+   } else {
+     /* 
+      * If something received
+      * something is connected upstream 
+      */
+     isUpstream = true ;
+   }
 
   /*
    * Get reply, if it exists
@@ -111,7 +127,7 @@ void loop() {
     passData = passData + char( upstreamSerial.read() ) ;
     
     //Account for latency in transfer
-    delay(5) ;
+    delay( transferLatency ) ;
     
     digitalWrite( resetLight , LOW ) ;
   }
@@ -136,7 +152,7 @@ void loop() {
      * Generate a string this unitId-upstream unitId
      * to add to the list of connections
      */
-    thisConnection = unitId + "-" + passData.substring( 0 , charIndex ) ;
+    thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) ;
     
     /*
      * Add this unitId to the start of the string
@@ -154,7 +170,7 @@ void loop() {
      * so it should assume that it is furthest from
      * the base in this part of the tree
      */
-     passData = unitId + ";" ;
+     passData = unitId + String( ";" ) ;
      
   }
   
