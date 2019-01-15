@@ -2,7 +2,6 @@
 #Needed for serial communication
 #with the base unit
 import serial
-import time
 
 #Converts a list of connections
 #as a string of the following format
