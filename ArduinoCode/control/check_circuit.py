@@ -129,6 +129,13 @@ incorrect = 0
 # Forever
 while True :
     
+    # New logic
+    # Send something out
+    # Wait a while to get a bunch of responses
+    # --- Add those responses into a circuit representation as receive
+    # Check against correct representation
+    # Update response based on this
+    
     # Try to read in the response
     try :
         characters = serial1.read(50).decode( "utf-8" )
