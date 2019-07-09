@@ -1,10 +1,5 @@
 
 void setup() {
-  
-  /*
-   * Assume initially that something is upstream
-   */
-  isUpstream = true ;
 
   /* 
    *  Open serial communication 
