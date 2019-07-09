@@ -162,9 +162,9 @@ while True :
     for message in messages:
         messages = messages + message.split(";")
     # Throw out anything with ; in it
-    messages = [m for m in message if ";" not in m]
+    messages = [m for m in messages if ";" not in m]
     # Throw out anything without a dash
-    messages = [m for m in message if "-" in m]
+    messages = [m for m in messages if "-" in m]
     # --- Add those responses into a circuit representation as received
     # Split the messages by the dash ID1-ID2
     # yielding connections in format [ID1,ID2]
