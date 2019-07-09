@@ -108,16 +108,17 @@ void loop() {
 
   } // 1
 
-  
-  /*
-   * Pass along the output upstream
-   */
-  upstreamSerial.print( passData ) ;
 
-  /*
-   * Pass own unit id downstream
-   */
-  Serial.print(unitId);
+  if(passData.length()>0) { 
+    /*
+     * Pass along the output upstream
+     */
+    upstreamSerial.print( passData ) ;
+    /*
+     * Pass own unit id downstream
+     */
+    Serial.print(unitId+String(";"));
+  }
 
   /*
    * Get message from upstream, if it exists
@@ -156,13 +157,13 @@ void loop() {
      */
     charIndex = passData.indexOf( ";" ) ;
 
-		// If not found, should be -1
+    // If not found, should be -1
     if(charIndex < 0) {
       // Just pass along the string
       Serial.print(passData);
     } else {
       // Generate a string this unitId-upstream unitId,
-		  thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
+      thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
       // Pass that string downstream
       Serial.print(thisConnection);
     }
