@@ -27,14 +27,6 @@ void setup() {
 void loop() {
   
   /*
-   * Wait for input from downstream
-   * This should always come if the object is part of the circuit
-   */
-  while( Serial.available() == 0 ) {
-    ; //Pass
-  }
-  
-  /*
    * Read input from downstream
    */
   passData = "" ;
