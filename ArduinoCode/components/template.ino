@@ -74,35 +74,53 @@ void loop() {
   }
   
   /*
-   * If something upstream confirms receipt
+   * If something was received from upstream
    */
   if( passData.length() > 0 ) {
     
     /*
-     * Format of received string should be
-     * upstream unitId;connections in format 1-2,2-3, ... ,
+     * Format of received string can be
+     * either ID1;ID1-ID2,
+     * or     ID1-ID2,
+     * In the latter case, pass along downstream
+     * In the former case, further processing required
      */
-     
+
     /*
-     * Firstly split off everything up to
-     * the semicolon, to get the upstream unitId
+     * Firstly find if there is a semicolon
+     * and if so where it is
      */
     charIndex = passData.indexOf( ";" ) ;
-    
-    /*
-     * Generate a string this unitId-upstream unitId
-     * to add to the list of connections
-     */
-    thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) ;
-    
-    /*
-     * Add this unitId to the start of the string
-     * Note that the semicolon required between
-     * this unitId and the list of connections
-     * is the first character of 
-     * passData.substring( charIndex )
-     */
-    passData = unitId + passData.substring( charIndex ) + thisConnection + "," ; 
+
+		// If no found, should be -1
+    if(charIndex < 0) {
+      // Just pass along the string
+      Serial.print(passData)
+    } else {
+
+			/* 
+       * Pass everything after the semicolon downstream
+       * (if the semicolon isn't the last character!)
+       */
+      if((charIndex+1)<passData.length()) {
+	      Serial.print(passData.subString(charIndex+1));
+      }
+
+		  /*
+		   * Generate a string this unitId-upstream unitId,
+		   * to send on to the next component
+		   */
+		  thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
+      
+      /*
+       * Per the message specification
+       * this unit's id must be added to
+       * the start of the string followed
+       * by a ; so the next unit downstream
+       * knows to whom it is attached
+       */
+      passData = unitId+";"+thisConnection;
+    }
     
   } else {
     
