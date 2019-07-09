@@ -132,7 +132,7 @@ while True :
     # New logic
     # Send something out
     try:
-        serial1.write(response)
+        serial1.write(response.encode('ascii'))
     except:
         # Break & quit if connection lost
         print("Serial connection seems to be lost, stopping")
