@@ -58,7 +58,7 @@ void loop() {
     /*
      * Pass own unit id downstream
      */
-    Serial.print(unitId);
+    Serial.print(unitId+";");
   }
 
   /*
