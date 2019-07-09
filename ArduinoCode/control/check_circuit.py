@@ -161,13 +161,6 @@ while True :
         # Report ditched information for debug
         print( "Remove last device name: " , characters )
 
-    # Print response for debug
-    print( response )
-    print( response.encode( "ascii" ) )
-
-    # Send the response to the connected component
-    serial1.write( response.encode( "ascii" ) )
-
     # I think the main point of failure would be
     # the first line, the call to parse_tree, if
     # the string reported by the circuit is not well formed
