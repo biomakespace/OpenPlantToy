@@ -126,11 +126,17 @@ response = "TRM,OFF;"
 # Count how many incorrect responses we've had since last correct one
 incorrect = 0
 
-# Forever
+# Forever (until broken)
 while True :
     
     # New logic
     # Send something out
+    try:
+        serial1.write(response)
+    except:
+        # Break & quit if connection lost
+        print("Serial connection seems to be lost, stopping")
+        break
     # Wait a while to get a bunch of responses
     # --- Add those responses into a circuit representation as receive
     # Check against correct representation
