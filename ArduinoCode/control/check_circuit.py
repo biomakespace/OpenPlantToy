@@ -103,13 +103,13 @@ def tree_match( tree_1 , tree_2 ) :
 
 def milliseconds_elapsed_since(initial_time):
     time_difference = datetime.datetime.now() - initial_time
-    return (time_difference.seconds/1000.0) + (time_difference.microseconds()*1000)
+    return (time_difference.seconds/1000.0) + (time_difference.microseconds*1000)
 
 # inertia + 1 = number of incorrect responses before turning off the light
 inertia = 2
 
 # Open the serial port on which the circuit component is connected
-serial1 = serial.Serial( "/dev/ttyUSB0" , 4800 , timeout=1 )
+serial1 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=1 )
 #serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
 # Print the name of the serial port, debug information
 print( serial1.name )
