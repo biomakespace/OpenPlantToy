@@ -2,6 +2,7 @@
 #Needed for serial communication
 #with the base unit
 import serial
+import datetime
 
 #Converts a list of connections
 #as a string of the following format
@@ -100,11 +101,15 @@ def tree_match( tree_1 , tree_2 ) :
 
 
 
+def milliseconds_elapsed_since(initial_time):
+    time_difference = datetime.datetime.now() - initial_time
+    return (time_difference.seconds/1000.0) + (time_difference.microseconds*1000)
+
 # inertia + 1 = number of incorrect responses before turning off the light
 inertia = 2
 
 # Open the serial port on which the circuit component is connected
-serial1 = serial.Serial( "/dev/ttyUSB0" , 4800 , timeout=1 )
+serial1 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=1 )
 #serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
 # Print the name of the serial port, debug information
 print( serial1.name )
@@ -112,11 +117,12 @@ print( serial1.name )
 # The internal circuit representation of the
 # circuit which is "correct"
 correct_circuit = [
-                    [ "TRM" , "3UT" ] ,
-                    [ "3UT" , "FRT" ] ,
-                    [ "FRT" , "5UT" ] ,
-                    [ "5UT" , "PRM" ] ,
-                    [ "PRM" , "REP" ] #,
+                    ["TRM","REP"]
+#                    [ "TRM" , "3UT" ] ,
+#                    [ "3UT" , "FRT" ] ,
+#                    [ "FRT" , "5UT" ] ,
+#                    [ "5UT" , "PRM" ] ,
+#                    [ "PRM" , "REP" ] #,
                     #[ "REP" , "DRP" ]
                   ] 
 
@@ -126,34 +132,52 @@ response = "TRM,OFF;"
 # Count how many incorrect responses we've had since last correct one
 incorrect = 0
 
-# Forever
+# How long to wait for responses in milliseconds
+RESPONSE_WAIT_TIMEOUT = 1000
+
+# Forever (until broken)
 while True :
     
-    # Try to read in the response
-    try :
-        characters = serial1.read(50).decode( "utf-8" )
-        # If it fails, assume empty response
-    except UnicodeDecodeError :
-        characters = ""
+    # New logic
+    
+    # Send something out
+    try:
+        serial1.write(response.encode('ascii'))
+    except:
+        # Break & quit if connection lost
+        print("Serial connection seems to be lost, stopping")
+        break
+    
+    # Store parsed connections here
+    assembled_circuit = []
+    # Wait a while to get a bunch of responses
+    start_time = datetime.datetime.now()
+    while(milliseconds_elapsed_since(start_time)<RESPONSE_WAIT_TIMEOUT):
+        pass
+
+    # Get any received response, and decode from bytes to string
+    received = serial1.read(50).decode("ascii")
+    # Split by ,
+    messages = received.split(",")
+    # Split by any ;, append results to array
+    for message in messages:
+        messages = messages + message.split(";")
+    # Throw out anything with ; in it
+    messages = [m for m in messages if ";" not in m]
+    # Throw out anything without a dash
+    messages = [m for m in messages if "-" in m]
+    # --- Add those responses into a circuit representation as received
+    # Split the messages by the dash ID1-ID2
+    # yielding connections in format [ID1,ID2]
+    for message in messages:
+        assembled_circuit.append(message.split("-"))        
+
+    
+    # Check against correct representation
+    # Update response based on this
         
     # Print response, debug information
-    print( "Raw response:" , characters )
-
-    # If we have received a well formed response,
-    # the first part should be the unitId of the most
-    # downstream followed by a semicolon
-    # This script has no use for this information, so ditch it
-    if( ";" in characters ) :
-        characters = characters.split( ";" ).pop()
-        # Report ditched information for debug
-        print( "Remove last device name: " , characters )
-
-    # Print response for debug
-    print( response )
-    print( response.encode( "ascii" ) )
-
-    # Send the response to the connected component
-    serial1.write( response.encode( "ascii" ) )
+    print( "From circuit:" , assembled_circuit )
 
     # I think the main point of failure would be
     # the first line, the call to parse_tree, if
@@ -165,15 +189,8 @@ while True :
     # is not set up correctly at the start
     try :
 
-        # Attempt to convert the received string
-        # into the internal circuit respresentation
-        connections = parse_tree( characters )
-
-        # Print result, debug information
-        print( "Pairwise connections:" , connections )
-
         # Check if reported circuit matches correct circuit
-        if( tree_match( connections , correct_circuit ) ) :
+        if( tree_match( assembled_circuit , correct_circuit ) ) :
 
             # If so reset number of incorrect circuits reported
             incorrect = 0

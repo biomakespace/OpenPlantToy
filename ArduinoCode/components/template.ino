@@ -1,10 +1,5 @@
 
 void setup() {
-  
-  /*
-   * Assume initially that something is upstream
-   */
-  isUpstream = true ;
 
   /* 
    *  Open serial communication 
@@ -25,14 +20,6 @@ void setup() {
 }
 
 void loop() {
-  
-  /*
-   * Wait for input from downstream
-   * This should always come if the object is part of the circuit
-   */
-  while( Serial.available() == 0 ) {
-    ; //Pass
-  }
   
   /*
    * Read input from downstream
@@ -62,36 +49,20 @@ void loop() {
   
   //Below replaced with led switching code, if applicable
   //<LED>
-  
-  /*
-   * Pass along the output upstream
-   */
-  upstreamSerial.print( passData ) ;
-  
-   /*
-    * Wait for response
-    * only if we think something is attached upstream
-    */
-   waitCounter = 0 ;
-   while( !upstreamSerial.available() & isUpstream & ( waitCounter < responseWait ) ) {
-     delay( 1 ) ;
-     waitCounter++ ;
-   }
- 
-   // If nothing received
-   if( !upstreamSerial.available() ) {
-     // Assume nothing is connected upstream
-     isUpstream = false ;
-   } else {
-     /* 
-      * If something received
-      * something is connected upstream 
-      */
-     isUpstream = true ;
-   }
+
+  if(passData.length()>0) { 
+    /*
+     * Pass along the output upstream
+     */
+    upstreamSerial.print( passData ) ;
+    /*
+     * Pass own unit id downstream
+     */
+    Serial.print(unitId+String(";"));
+  }
 
   /*
-   * Get reply, if it exists
+   * Get message from upstream, if it exists
    */
   passData = "" ;
   while( upstreamSerial.available() > 0 ) {
@@ -109,51 +80,35 @@ void loop() {
   }
   
   /*
-   * If something upstream confirms receipt
+   * If something was received from upstream
    */
   if( passData.length() > 0 ) {
     
     /*
-     * Format of received string should be
-     * upstream unitId;connections in format 1-2,2-3, ... ,
+     * Format of received string can be
+     * either ID1;
+     * or     ID1-ID2,
+     * In the latter case, just pass along downstream
+     * In the former case, construct new string
      */
-     
+
     /*
-     * Firstly split off everything up to
-     * the semicolon, to get the upstream unitId
+     * Firstly find if there is a semicolon
+     * and if so where it is
      */
     charIndex = passData.indexOf( ";" ) ;
+
+    // If not found, should be -1
+    if(charIndex < 0) {
+      // Just pass along the string
+      Serial.print(passData);
+    } else {
+      // Generate a string this unitId-upstream unitId,
+      thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
+      // Pass that string downstream
+      Serial.print(thisConnection);
+    }
     
-    /*
-     * Generate a string this unitId-upstream unitId
-     * to add to the list of connections
-     */
-    thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) ;
-    
-    /*
-     * Add this unitId to the start of the string
-     * Note that the semicolon required between
-     * this unitId and the list of connections
-     * is the first character of 
-     * passData.substring( charIndex )
-     */
-    passData = unitId + passData.substring( charIndex ) + thisConnection + "," ; 
-    
-  } else {
-    
-    /*
-     * This unit didn't receive any input from upstream
-     * so it should assume that it is furthest from
-     * the base in this part of the tree
-     */
-     passData = unitId + String( ";" ) ;
-     
   }
-  
-  /*
-   * The generated sting is then communicated downwards
-   * to trickle down to the base unit
-   */
-  Serial.print( passData ) ;
 
 }
