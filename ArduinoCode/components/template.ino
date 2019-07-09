@@ -100,7 +100,7 @@ void loop() {
 		// If not found, should be -1
     if(charIndex < 0) {
       // Just pass along the string
-      Serial.print(passData)
+      Serial.print(passData);
     } else {
       // Generate a string this unitId-upstream unitId,
 		  thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
