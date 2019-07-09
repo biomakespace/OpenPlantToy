@@ -117,11 +117,12 @@ print( serial1.name )
 # The internal circuit representation of the
 # circuit which is "correct"
 correct_circuit = [
-                    [ "TRM" , "3UT" ] ,
-                    [ "3UT" , "FRT" ] ,
-                    [ "FRT" , "5UT" ] ,
-                    [ "5UT" , "PRM" ] ,
-                    [ "PRM" , "REP" ] #,
+                    ["TRM","REP"]
+#                    [ "TRM" , "3UT" ] ,
+#                    [ "3UT" , "FRT" ] ,
+#                    [ "FRT" , "5UT" ] ,
+#                    [ "5UT" , "PRM" ] ,
+#                    [ "PRM" , "REP" ] #,
                     #[ "REP" , "DRP" ]
                   ] 
 
