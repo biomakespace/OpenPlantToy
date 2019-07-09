@@ -2,6 +2,7 @@
 #Needed for serial communication
 #with the base unit
 import serial
+import datetime
 
 #Converts a list of connections
 #as a string of the following format
@@ -100,6 +101,10 @@ def tree_match( tree_1 , tree_2 ) :
 
 
 
+def milliseconds_elapsed_since(initial_time):
+    time_difference = datetime.datetime.now() - initial_time
+    return (time_difference.seconds/1000.0) + (time_differences.microseconds()*1000)
+
 # inertia + 1 = number of incorrect responses before turning off the light
 inertia = 2
 
@@ -126,10 +131,14 @@ response = "TRM,OFF;"
 # Count how many incorrect responses we've had since last correct one
 incorrect = 0
 
+# How long to wait for responses in milliseconds
+RESPONSE_WAIT_TIMEOUT = 1000
+
 # Forever (until broken)
 while True :
     
     # New logic
+    
     # Send something out
     try:
         serial1.write(response.encode('ascii'))
@@ -137,17 +146,34 @@ while True :
         # Break & quit if connection lost
         print("Serial connection seems to be lost, stopping")
         break
+    
+    # Store parsed connections here
+    assembled_circuit = []
     # Wait a while to get a bunch of responses
-    # --- Add those responses into a circuit representation as receive
+    start_time = datetime.datetime.now()
+    while(milliseconds_elapsed_since(start_time)<RESPONSE_WAIT_TIMEOUT):
+        pass
+
+    # Get any received response, and decode from bytes to string
+    received = serial1.read(50).decode("ascii")
+    # Split by ,
+    messages = received.split(",")
+    # Split by any ;, append results to array
+    for message in messages:
+        messages = messages + message.split(";")
+    # Throw out anything with ; in it
+    messages = [m for m in message if ";" not in m]
+    # Throw out anything without a dash
+    messages = [m for m in message if "-" in m]
+    # --- Add those responses into a circuit representation as received
+    # Split the messages by the dash ID1-ID2
+    # yielding connections in format [ID1,ID2]
+    for message in messages:
+        assembled_circuit.append(message.split("-"))        
+
+    
     # Check against correct representation
     # Update response based on this
-    
-    # Try to read in the response
-    try :
-        characters = serial1.read(50).decode( "utf-8" )
-        # If it fails, assume empty response
-    except UnicodeDecodeError :
-        characters = ""
         
     # Print response, debug information
     print( "Raw response:" , characters )
