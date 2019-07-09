@@ -103,7 +103,7 @@ def tree_match( tree_1 , tree_2 ) :
 
 def milliseconds_elapsed_since(initial_time):
     time_difference = datetime.datetime.now() - initial_time
-    return (time_difference.seconds/1000.0) + (time_differences.microseconds()*1000)
+    return (time_difference.seconds/1000.0) + (time_difference.microseconds()*1000)
 
 # inertia + 1 = number of incorrect responses before turning off the light
 inertia = 2
