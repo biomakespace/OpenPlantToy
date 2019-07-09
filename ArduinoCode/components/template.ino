@@ -56,7 +56,12 @@ void loop() {
   upstreamSerial.print( passData ) ;
 
   /*
-   * Get reply, if it exists
+   * Pass own unit id downstream
+   */
+  Serial.print(unitId);
+
+  /*
+   * Get message from upstream, if it exists
    */
   passData = "" ;
   while( upstreamSerial.available() > 0 ) {
@@ -80,10 +85,10 @@ void loop() {
     
     /*
      * Format of received string can be
-     * either ID1;ID1-ID2,
+     * either ID1;
      * or     ID1-ID2,
-     * In the latter case, pass along downstream
-     * In the former case, further processing required
+     * In the latter case, just pass along downstream
+     * In the former case, construct new string
      */
 
     /*
@@ -92,51 +97,17 @@ void loop() {
      */
     charIndex = passData.indexOf( ";" ) ;
 
-		// If no found, should be -1
+		// If not found, should be -1
     if(charIndex < 0) {
       // Just pass along the string
       Serial.print(passData)
     } else {
-
-			/* 
-       * Pass everything after the semicolon downstream
-       * (if the semicolon isn't the last character!)
-       */
-      if((charIndex+1)<passData.length()) {
-	      Serial.print(passData.subString(charIndex+1));
-      }
-
-		  /*
-		   * Generate a string this unitId-upstream unitId,
-		   * to send on to the next component
-		   */
+      // Generate a string this unitId-upstream unitId,
 		  thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
-      
-      /*
-       * Per the message specification
-       * this unit's id must be added to
-       * the start of the string followed
-       * by a ; so the next unit downstream
-       * knows to whom it is attached
-       */
-      passData = unitId+";"+thisConnection;
+      // Pass that string downstream
+      Serial.print(thisConnection);
     }
     
-  } else {
-    
-    /*
-     * This unit didn't receive any input from upstream
-     * so it should assume that it is furthest from
-     * the base in this part of the tree
-     */
-     passData = unitId + String( ";" ) ;
-     
   }
-  
-  /*
-   * The generated sting is then communicated downwards
-   * to trickle down to the base unit
-   */
-  Serial.print( passData ) ;
 
 }
