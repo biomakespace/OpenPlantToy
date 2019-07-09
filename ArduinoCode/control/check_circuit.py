@@ -176,16 +176,7 @@ while True :
     # Update response based on this
         
     # Print response, debug information
-    print( "Raw response:" , characters )
-
-    # If we have received a well formed response,
-    # the first part should be the unitId of the most
-    # downstream followed by a semicolon
-    # This script has no use for this information, so ditch it
-    if( ";" in characters ) :
-        characters = characters.split( ";" ).pop()
-        # Report ditched information for debug
-        print( "Remove last device name: " , characters )
+    print( "From circuit:" , assembled_circuit )
 
     # I think the main point of failure would be
     # the first line, the call to parse_tree, if
@@ -197,15 +188,8 @@ while True :
     # is not set up correctly at the start
     try :
 
-        # Attempt to convert the received string
-        # into the internal circuit respresentation
-        connections = parse_tree( characters )
-
-        # Print result, debug information
-        print( "Pairwise connections:" , connections )
-
         # Check if reported circuit matches correct circuit
-        if( tree_match( connections , correct_circuit ) ) :
+        if( tree_match( assembled_circuit , correct_circuit ) ) :
 
             # If so reset number of incorrect circuits reported
             incorrect = 0
