@@ -13,3 +13,6 @@ class Connection:
 
     def equals(self, compare):
         return self.upstream == compare.upstream and self.downstream == compare.downstream
+
+    def hash(self):
+        return self.upstream + self.downstream
