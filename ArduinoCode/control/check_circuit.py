@@ -1,6 +1,7 @@
 
 # Needed for serial communication
 # with the base unit
+import sys
 import serial
 import datetime
 
@@ -18,10 +19,14 @@ def milliseconds_elapsed_since(initial_time):
 inertia = 2
 
 # Open the serial port on which the circuit component is connected
-serial1 = serial.Serial("/dev/ttyUSB1", 4800, timeout=1)
+try:
+    serial1 = serial.Serial("/dev/ttyUSB1", 4800, timeout=1)
+except serial.SerialException:
+    print("Could not open serial port for communication. Exiting.")
+    sys.exit(1)
 # serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
 # Print the name of the serial port, debug information
-print(serial1.name)
+print("Opened communication with ", serial1.name)
 
 # The internal circuit representation of the
 # circuit which is "correct"
