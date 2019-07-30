@@ -57,9 +57,9 @@ while True:
     # Send something out
     try:
         serial1.write(response.encode('ascii'))
-    except:
+    except serial.SerialException:
         # Break & quit if connection lost
-        print("Serial connection seems to be lost, stopping")
+        print("Serial connection seems to be lost. Stopping.")
         break
     
     # Store parsed connections here
