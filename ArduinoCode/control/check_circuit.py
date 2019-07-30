@@ -18,10 +18,10 @@ def milliseconds_elapsed_since(initial_time):
 inertia = 2
 
 # Open the serial port on which the circuit component is connected
-serial1 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=1 )
+serial1 = serial.Serial("/dev/ttyUSB1", 4800, timeout=1)
 # serial2 = serial.Serial( "/dev/ttyUSB1" , 4800 , timeout=3 )
 # Print the name of the serial port, debug information
-print( serial1.name )
+print(serial1.name)
 
 # The internal circuit representation of the
 # circuit which is "correct"
