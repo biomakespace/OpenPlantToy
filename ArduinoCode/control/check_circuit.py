@@ -4,6 +4,10 @@
 import serial
 import datetime
 
+# Import this package's classes
+from connection import Connection
+from circuit import Circuit
+    
 # Converts a list of connections
 # as a string of the following format
 # id1-id2,id2-id3,id2-id4,id4-id5
@@ -116,15 +120,15 @@ print( serial1.name )
 
 # The internal circuit representation of the
 # circuit which is "correct"
-correct_circuit = [
-                    ["TRM","REP"]
-#                    [ "TRM" , "3UT" ] ,
-#                    [ "3UT" , "FRT" ] ,
-#                    [ "FRT" , "5UT" ] ,
-#                    [ "5UT" , "PRM" ] ,
-#                    [ "PRM" , "REP" ] #,
-                    #[ "REP" , "DRP" ]
-                  ] 
+correct_circuit = Circuit()
+correct_circuit.add_connection(Connection("TRM", "REP"))
+# [ "TRM" , "REP" ]
+# [ "TRM" , "3UT" ]
+# [ "3UT" , "FRT" ]
+# [ "FRT" , "5UT" ]
+# [ "5UT" , "PRM" ]
+# [ "PRM" , "REP" ]
+# [ "REP" , "DRP" ]
 
 # Initial message to circuit, assuming incorrect circuit
 response = "TRM,OFF;"
@@ -136,7 +140,7 @@ incorrect = 0
 RESPONSE_WAIT_TIMEOUT = 1000
 
 # Forever (until broken)
-while True :
+while True:
     
     # New logic
     
@@ -149,10 +153,11 @@ while True :
         break
     
     # Store parsed connections here
-    assembled_circuit = []
+    assembled_circuit = Circuit()
+
     # Wait a while to get a bunch of responses
     start_time = datetime.datetime.now()
-    while(milliseconds_elapsed_since(start_time)<RESPONSE_WAIT_TIMEOUT):
+    while milliseconds_elapsed_since(start_time) < RESPONSE_WAIT_TIMEOUT:
         pass
 
     # Get any received response, and decode from bytes to string
@@ -170,14 +175,18 @@ while True :
     # Split the messages by the dash ID1-ID2
     # yielding connections in format [ID1,ID2]
     for message in messages:
-        assembled_circuit.append(message.split("-"))        
-
+        assembled_circuit.add_connection(
+            Connection(
+                message.split("-")[0],
+                message.split("-")[1]
+            )
+        )
     
     # Check against correct representation
     # Update response based on this
         
     # Print response, debug information
-    print( "From circuit:" , assembled_circuit )
+    print("From circuit:", assembled_circuit.hash())
 
     # I think the main point of failure would be
     # the first line, the call to parse_tree, if
@@ -187,32 +196,24 @@ while True :
     # but this should either be very unlikely to happen
     # or happen every time if the "correct" circuit
     # is not set up correctly at the start
-    try :
-
+    try:
         # Check if reported circuit matches correct circuit
-        if( tree_match( assembled_circuit , correct_circuit ) ) :
-
+        if correct_circuit.equals(assembled_circuit):
             # If so reset number of incorrect circuits reported
             incorrect = 0
-
             # Confirm match, debug information
-            print( "MATCH" )
-
+            print("MATCH")
             # Set response for correct circuit
             response = "TRM,ON;"
-
         # If reported circuit does not match the correct circuit
-        else :
-
+        else:
             # Increment number of incorrect responses seen
             incorrect += 1
-
             # Report lack of match, debug information
-            print( "NO MATCH" )
-
+            print("NO MATCH")
             # If there have been too many incorrect responses,
             # set the response for an incorrect circuit
-            if incorrect > inertia :
+            if incorrect > inertia:
                 response = "TRM,OFF;"
 
     # Catch all exceptions and do nothing with them, for now
@@ -224,5 +225,4 @@ while True :
         pass
 
     # Separator between loops, for better legibility of debug information
-    print( "###############" )
-    
+    print("###############")
