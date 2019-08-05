@@ -21,7 +21,7 @@ inertia = 2
 
 # Open the serial port on which the circuit component is connected
 try:
-    serial1 = serial.Serial("/dev/ttyUSB1", 4800, timeout=1)
+    serial1 = serial.Serial("/dev/ttyUSB0", 4800, timeout=1)
 except serial.SerialException:
     print("Could not open serial port for communication. Exiting.")
     sys.exit(1)
@@ -122,6 +122,7 @@ while True:
             incorrect += 1
             # Report lack of match, debug information
             print("NO MATCH")
+            print(correct_circuit.get_next_hint(assembled_circuit))
             # If there have been too many incorrect responses,
             # set the response for an incorrect circuit
             if incorrect > inertia:
