@@ -31,3 +31,8 @@ class Circuit:
     # Check if this circuit equals the provided circuit
     def equals(self, circuit):
         return self.hash() == circuit.hash()
+
+    # Generator for connections
+    def elements(self):
+        for connection in self.connections:
+            yield connection
