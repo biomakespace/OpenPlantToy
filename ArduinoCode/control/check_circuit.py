@@ -8,6 +8,7 @@ import datetime
 # Import this package's classes
 from connection import Connection
 from circuit import Circuit
+from target_circuit import TargetCircuit
 
 
 def milliseconds_elapsed_since(initial_time):
@@ -30,7 +31,7 @@ print("Opened communication with ", serial1.name)
 
 # The internal circuit representation of the
 # circuit which is "correct"
-correct_circuit = Circuit()
+correct_circuit = TargetCircuit()
 correct_circuit.add_connection(Connection("TRM", "REP"))
 # [ "TRM" , "REP" ]
 # [ "TRM" , "3UT" ]
