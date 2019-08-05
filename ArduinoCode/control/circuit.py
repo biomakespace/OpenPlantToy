@@ -33,6 +33,6 @@ class Circuit:
         return self.hash() == circuit.hash()
 
     # Generator for connections
-    def elements(self):
-        for connection in self.connections:
-            yield connection
+    # def elements(self):
+    #     for connection in self.connections:
+    #         yield connection
