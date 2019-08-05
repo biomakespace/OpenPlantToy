@@ -12,6 +12,8 @@ from circuit import Circuit
 
 class TargetCircuit(Circuit):
 
+    EMPTY_CIRCUIT_HINT = "There must be at least one element in the circuit"
+
     def __init__(self):
         self.connections = []
         self.hints = []
@@ -24,6 +26,10 @@ class TargetCircuit(Circuit):
     # identify the hint to be provided
     # to the users for the next connection
     def get_next_hint(self, circuit):
+        # If the actual circuit is empty
+        # return a default message
+        if circuit.number_of_connections() == 0:
+            return TargetCircuit.EMPTY_CIRCUIT_HINT
         # Find the first element in
         # the target circuit that
         # is not in the actual circuit
