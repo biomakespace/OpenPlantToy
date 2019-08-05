@@ -12,7 +12,7 @@ from circuit import Circuit
 
 class TargetCircuit(Circuit):
 
-    EMPTY_CIRCUIT_HINT = "There must be at least one element in the circuit"
+    EMPTY_CIRCUIT_HINT = "There must be at least one connection in the circuit"
 
     def __init__(self):
         self.connections = []
