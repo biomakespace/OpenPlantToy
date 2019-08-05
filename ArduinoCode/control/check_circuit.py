@@ -32,7 +32,7 @@ print("Opened communication with ", serial1.name)
 # The internal circuit representation of the
 # circuit which is "correct"
 correct_circuit = TargetCircuit()
-correct_circuit.add_connection(Connection("TRM", "REP"))
+correct_circuit.add_connection(Connection("TRM", "REP"), "TRM must be followed by REP")
 # [ "TRM" , "REP" ]
 # [ "TRM" , "3UT" ]
 # [ "3UT" , "FRT" ]
