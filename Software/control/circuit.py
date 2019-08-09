@@ -36,3 +36,15 @@ class Circuit:
     # def elements(self):
     #     for connection in self.connections:
     #         yield connection
+
+    # Finds the 'root component'
+    # that is the one closest to the controller
+    # The root component will appear as
+    # in an upstream position but never
+    # in a downstream position
+    def root_component(self):
+        for check_connection in self.connections:
+            if check_connection.upstream in [connection.downstream for connection in self.connections]:
+                continue
+            else:
+                return check_connection
