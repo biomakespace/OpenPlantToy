@@ -48,3 +48,10 @@ class Circuit:
                 continue
             else:
                 return check_connection
+
+    # Return an array containing
+    # any components which are
+    # connected to the one
+    # provided as an argument
+    def components_connected_to(self, connected_component):
+        return [connection.downstream for connection in self.connections if connection.upstream == connected_component]
