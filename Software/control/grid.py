@@ -13,11 +13,11 @@ class Grid:
     # in a grid according
     # to connectivity
     def lay_out(self):
-        start_column = 0
-        start_row = 0
+        start_column = 1
+        start_row = 1
         # Place the first call to advance row
         # with the root component
-        # and start at 0 0
+        # and start at 1 1
         return self.advance_row(self.circuit.root_component(), start_row, start_column)
 
     # Given a component and a start
