@@ -17,5 +17,6 @@ from django.urls import path
 from genetic_circuit_controller import views
 
 urlpatterns = [
-    path("circuit", views.circuit)
+    path("circuit", views.circuit),
+    path("api/circuit-drawing", views.circuit_drawing)
 ]
