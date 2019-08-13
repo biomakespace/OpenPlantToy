@@ -193,17 +193,3 @@ class CircuitChecker:
     def get_circuit_information(self):
         return CircuitChecker.circuit_information
 
-
-
-### TODO THIS WILL NEED TO BE MOVED ELSEWHERE
-# The internal circuit representation of the
-# circuit which is "correct"
-# correct_circuit = TargetCircuit()
-# correct_circuit.add_connection(Connection("TRM", "REP"), "TRM must be followed by REP")
-# # [ "TRM" , "REP" ]
-# # [ "TRM" , "3UT" ]
-# # [ "3UT" , "FRT" ]
-# # [ "FRT" , "5UT" ]
-# # [ "5UT" , "PRM" ]
-# # [ "PRM" , "REP" ]
-# # [ "REP" , "DRP" ]
