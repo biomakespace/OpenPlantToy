@@ -68,6 +68,8 @@ class CircuitChecker:
     inertia = 2
     # Response sent to circuit
     response = ";"
+    # Last received information about circuit
+    circuit_information = None
 
     def __init__(self):
         pass   # Nothing to do
@@ -121,8 +123,8 @@ class CircuitChecker:
             if CircuitChecker.target_circuit.equals(assembled_circuit):
                 # If so reset number of incorrect circuits reported
                 CircuitChecker.incorrect = 0
-                circuit_information['match'] = True
-                circuit_information['hint'] = None
+                CircuitChecker.circuit_information['match'] = True
+                CircuitChecker.circuit_information['hint'] = None
                 # TODO REMOVE (DEBUG)
                 print("MATCH")
                 # Set response for correct circuit
@@ -131,11 +133,11 @@ class CircuitChecker:
             else:
                 # Increment number of incorrect responses seen
                 CircuitChecker.incorrect += 1
-                circuit_information['match'] = False
+                CircuitChecker.circuit_information['match'] = False
                 # Report lack of match, debug information
                 print("NO MATCH")
                 print(CircuitChecker.target_circuit.get_next_hint(assembled_circuit))
-                circuit_information['hint'] = CircuitChecker.target_circuit.get_next_hint(assembled_circuit)
+                CircuitChecker.circuit_information['hint'] = CircuitChecker.target_circuit.get_next_hint(assembled_circuit)
                 # If there have been too many incorrect responses,
                 # set the response for an incorrect circuit
                 if CircuitChecker.incorrect > CircuitChecker.inertia:
@@ -149,17 +151,13 @@ class CircuitChecker:
         except Exception as e :
             pass
 
-        try:
-            CircuitChecker.connection.write(CircuitChecker.response.encode('ascii'))
-        except serial.SerialException:
-            # TODO REMOVE (DEBUG)
-            print("Serial connection seems to be lost.")
+        # try:
+        #     CircuitChecker.connection.write(CircuitChecker.response.encode('ascii'))
+        # except serial.SerialException:
+        #     # TODO REMOVE (DEBUG)
+        #     print("Serial connection seems to be lost.")
 
         # TODO GRID AND DRAWING
-
-        return circuit_information
-
-
 
     # Helper method to parse
     # the received responses
@@ -188,8 +186,12 @@ class CircuitChecker:
             )
         return circuit
 
+    def run(self):
+        while True:
+            self.check()
 
-
+    def get_circuit_information(self):
+        return CircuitChecker.circuit_information
 
 
 

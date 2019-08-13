@@ -12,5 +12,5 @@ def circuit(request):
 
 def check_circuit(request):
     checker = get_instance()
-    circuit_information = checker.check()
+    circuit_information = checker.get_circuit_information()
     return JsonResponse(circuit_information)
