@@ -11,7 +11,10 @@ from control.check_circuit import get_instance
 class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        pass
+        if self.path == 'check-circuit':
+            self.page_check_circuit()
+        if self.path == 'api/circuit-information':
+            self.api_circuit_information()
 
     def page_check_circuit(self):
         pass
