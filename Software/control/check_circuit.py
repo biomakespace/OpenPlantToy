@@ -69,7 +69,7 @@ class CircuitChecker:
     # Response sent to circuit
     response = ";"
     # Last received information about circuit
-    circuit_information = None
+    circuit_information = {}
 
     def __init__(self):
         pass   # Nothing to do
