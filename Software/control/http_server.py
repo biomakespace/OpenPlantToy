@@ -10,11 +10,17 @@ from control.check_circuit import get_instance
 
 class RequestHandler(BaseHTTPRequestHandler):
 
+    CHECK_CIRCUIT_PATH = 'check-circuit'
+
     def do_GET(self):
-        if self.path == 'check-circuit':
+        if self.path == RequestHandler.CHECK_CIRCUIT_PATH:
             self.page_check_circuit()
         if self.path == 'api/circuit-information':
             self.api_circuit_information()
+        if self.path == '/':
+            self.root()
+        else:
+            self.page_not_found()
 
     def page_check_circuit(self):
         asset_path = 'assets/check-circuit.html'
@@ -41,7 +47,23 @@ class RequestHandler(BaseHTTPRequestHandler):
             ).encode('utf-8')
         )
 
+    # If page not found
+    # Redirect to root
+    def page_not_found(self):
+        self.send_response(302)
+        self.send_header("Location", "/")
+        self.end_headers()
+
+    # From root redirect
+    # to check circuit path
+    def root(self):
+        self.send_response(302)
+        self.send_header("Location", RequestHandler.CHECK_CIRCUIT_PATH)
+        self.end_headers()
+
+    #
     # Helper methods
+    #
 
     # Helper method to read
     # in a whole file as bytes
