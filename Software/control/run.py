@@ -4,15 +4,18 @@
 # for the controller
 
 import threading
+from http.server import HTTPServer
 
 from control.target_circuit import TargetCircuit
 from control.connection import Connection
 from control.check_circuit import open_serial
 from control.check_circuit import set_target
 from control.check_circuit import get_instance
+from control.http_server import RequestHandler
 
 SERIAL_PATH = '/dev/ttyUSB0'
 BAUD_RATE = 4800
+SERVER_PORT = 12221
 
 
 def run():
@@ -37,9 +40,9 @@ def run():
     circuit_checking_thread = threading.Thread(target=circuit_checker.run)
     circuit_checking_thread.start()
 
-    # Set up web server
-
-    # Run web server
+    # Start web server
+    server = HTTPServer(("", SERVER_PORT), RequestHandler)
+    server.serve_forever()
 
 
 if __name__ == '__main__':
