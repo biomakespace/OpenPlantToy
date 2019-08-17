@@ -10,14 +10,14 @@ from control.check_circuit import get_instance
 
 class RequestHandler(BaseHTTPRequestHandler):
 
-    CHECK_CIRCUIT_PATH = 'check-circuit'
+    CHECK_CIRCUIT_PATH = '/check-circuit'
 
     def do_GET(self):
         if self.path == RequestHandler.CHECK_CIRCUIT_PATH:
             self.page_check_circuit()
-        if self.path == 'api/circuit-information':
+        elif self.path == '/api/circuit-information':
             self.api_circuit_information()
-        if self.path == '/':
+        elif self.path == '/':
             self.root()
         else:
             self.page_not_found()
