@@ -89,7 +89,7 @@ class CircuitChecker:
         # Collect information about
         # the checked circuit to
         # pass back via the API
-        circuit_information = {}
+        CircuitChecker.circuit_information = {}
 
         try:
             # Clear previous response first
