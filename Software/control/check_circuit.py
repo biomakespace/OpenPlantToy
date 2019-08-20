@@ -160,7 +160,8 @@ class CircuitChecker:
         #     # TODO REMOVE (DEBUG)
         #     print("Serial connection seems to be lost.")
 
-        # TODO GRID AND DRAWING
+        # TODO REMOVE (DEBUG)
+        print(circuit_information)
 
     # Helper method to parse
     # the received responses
