@@ -32,15 +32,44 @@ class GridHtml:
         container = self.container_element()
         return [container]
 
+    # Create the div container
+    # for the diagram
     def container_element(self):
         total_rows = max([position[1] for position in self.grid])
         total_columns = max([position[2] for position in self.grid])
         return {
             "element_type": "div",
-            "style": GridHtml.CONTAINER_STYLE_TEMPLATE.format(
-                total_rows,
-                total_columns
-            ),
+            "attributes": {
+                "style": GridHtml.CONTAINER_STYLE_TEMPLATE.format(
+                    total_rows,
+                    total_columns
+                )
+            },
             "children": [],
             "content": ""
         }
+
+    # Create a html element
+    # for a provided component
+    def component_element(self, component):
+        # Remember: [id, row, column]
+        text_element = {
+            "element_type": "p",
+            "attributes": {},
+            "children": [],
+            "content": component[0]
+        }
+        element = {
+            "element_type": "div",
+            "attributes": {
+                "style": GridHtml.ITEM_STYLE_TEMPLATE.format(
+                    component[1],
+                    component[2]
+                )
+            },
+            "children": [
+                text_element
+            ],
+            "content": ""
+        }
+        return element
