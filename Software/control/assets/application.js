@@ -17,7 +17,7 @@ function updateDisplayAll() {
       console.log(circuitInformation["match"]);
       console.log(circuitInformation["hint"]);
       updateMatch(circuitInformation["match"]);
-      HINT_DISPLAY.innerHTML = circuitInformation["hint"];
+      updateHint(circuitInformation["hint"]);
     })
     .catch(function(error) {
       console.error(error);
@@ -37,6 +37,19 @@ function updateMatch(circuitCorrect) {
   } else {
     MATCH_DISPLAY.innerHTML = "Circuit is not correct...";
   }
+}
+
+/*
+ * Displays a hint that tells
+ * the user how to improve
+ * the circuit is one is
+ * provided from the api
+ * Hint should be either
+ * a string (of the hint)
+ * or null if no hint
+ */
+function updateHint(hint) {
+  HINT_DISPLAY.innerHTML = hint;
 }
 
 setInterval(updateDisplayAll, 500);
