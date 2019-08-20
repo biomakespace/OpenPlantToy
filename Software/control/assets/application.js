@@ -16,11 +16,7 @@ function updateDisplayAll() {
       console.log(circuitInformation);
       console.log(circuitInformation["match"]);
       console.log(circuitInformation["hint"]);
-      if (circuitInformation["match"]) {
-        MATCH_DISPLAY.innerHTML = "Circuit is correct!";
-      } else {
-        MATCH_DISPLAY.innerHTML = "Circuit is not correct...";
-      }
+      updateMatch(circuitInformation["match"]);
       HINT_DISPLAY.innerHTML = circuitInformation["hint"];
     })
     .catch(function(error) {
@@ -28,6 +24,19 @@ function updateDisplayAll() {
     })
 }
 
-
+/*
+ * Updates the part of the display
+ * that indicates whether the circuit
+ * matches the target circuit or not
+ * circuitCorrect is a boolean
+ * which specifies this
+ */
+function updateMatch(circuitCorrect) {
+  if (circuitCorrect) {
+    MATCH_DISPLAY.innerHTML = "Circuit is correct!";
+  } else {
+    MATCH_DISPLAY.innerHTML = "Circuit is not correct...";
+  }
+}
 
 setInterval(updateDisplayAll, 500);
