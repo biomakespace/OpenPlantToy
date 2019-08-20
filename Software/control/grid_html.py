@@ -32,7 +32,7 @@ class GridHtml:
         container = self.container_element()
         for component in self.grid:
             container["children"].append(
-                self.container_element(component)
+                self.component_element(component)
             )
         return [container]
 
