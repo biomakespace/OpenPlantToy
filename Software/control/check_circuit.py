@@ -6,9 +6,10 @@ import serial
 import datetime
 
 # Import this package's classes
-from connection import Connection
-from circuit import Circuit
-from target_circuit import TargetCircuit
+from control.circuit import Circuit
+from control.connection import Connection
+from control.grid import Grid
+from control.grid_html import GridHtml
 
 
 # Need to be static methods
@@ -109,6 +110,8 @@ class CircuitChecker:
 
         # TODO REMOVE (DEBUG)
         print("From circuit: ", assembled_circuit.hash())
+
+        circuit_information["html"] = GridHtml(Grid(assembled_circuit)).get_json()
 
         # I think the main point of failure would be
         # the first line, the call to parse_tree, if
