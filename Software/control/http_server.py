@@ -15,6 +15,8 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == RequestHandler.CHECK_CIRCUIT_PATH:
             self.page_check_circuit()
+        elif self.path == "/application.js":
+            self.script_application_js()
         elif self.path == '/api/circuit-information':
             self.api_circuit_information()
         elif self.path == '/':
@@ -22,8 +24,22 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self.page_not_found()
 
+    # TODO abstract following two
+    # methods into a single
+    # method
     def page_check_circuit(self):
         asset_path = 'assets/check-circuit.html'
+        body = self.read_file_bytes(asset_path)
+        if len(body) > 0:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(body)
+        else:
+            self.send_response(500, 'Internal Server Error')
+            self.end_headers()
+
+    def script_application_js(self):
+        asset_path = 'assets/application.js'
         body = self.read_file_bytes(asset_path)
         if len(body) > 0:
             self.send_response(200)
