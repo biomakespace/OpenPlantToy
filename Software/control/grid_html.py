@@ -30,6 +30,10 @@ class GridHtml:
 
     def get_json(self):
         container = self.container_element()
+        for component in self.grid:
+            container["children"].append(
+                self.container_element(component)
+            )
         return [container]
 
     # Create the div container
