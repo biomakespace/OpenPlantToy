@@ -3,7 +3,7 @@ let HINT_DISPLAY = document.getElementById("hint");
 let MATCH_DISPLAY = document.getElementById("status");
 let CIRCUIT_INFORMATION_API_PATH = "/api/circuit-information";
 
-function updateDisplay() {
+function updateDisplayAll() {
   fetch(CIRCUIT_INFORMATION_API_PATH)
     .then(function(response) {
       if(response.ok) {
@@ -28,4 +28,6 @@ function updateDisplay() {
     })
 }
 
-setInterval(updateDisplay, 500);
+
+
+setInterval(updateDisplayAll, 500);
