@@ -111,7 +111,7 @@ class CircuitChecker:
         # TODO REMOVE (DEBUG)
         print("From circuit: ", assembled_circuit.hash())
 
-        circuit_information["html"] = GridHtml(Grid(assembled_circuit)).get_json()
+        CircuitChecker.circuit_information["html"] = GridHtml(Grid(assembled_circuit)).get_json()
 
         # I think the main point of failure would be
         # the first line, the call to parse_tree, if
