@@ -43,15 +43,16 @@ class Circuit:
     # in an upstream position but never
     # in a downstream position
     def root_component(self):
+        # Remember upstream away from controller, downstream close to controller
         for check_connection in self.connections:
-            if check_connection.upstream in [connection.downstream for connection in self.connections]:
+            if check_connection.downstream in [connection.upstream for connection in self.connections]:
                 continue
             else:
-                return check_connection.upstream
+                return check_connection.downstream
 
     # Return an array containing
     # any components which are
     # connected to the one
     # provided as an argument
     def components_connected_to(self, connected_component):
-        return [connection.downstream for connection in self.connections if connection.upstream == connected_component]
+        return [connection.upstream for connection in self.connections if connection.downstream == connected_component]

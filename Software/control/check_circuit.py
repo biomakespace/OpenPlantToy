@@ -180,6 +180,7 @@ class CircuitChecker:
         # --- Add those responses into a circuit representation as received
         # Split the messages by the dash ID1-ID2
         # yielding connections in format [ID1,ID2]
+        # NOTE: messages are in order [downstream, upstream]
         circuit = Circuit()
         for message in messages:
             circuit.add_connection(

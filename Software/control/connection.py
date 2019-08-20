@@ -7,12 +7,15 @@
 
 class Connection:
 
-    def __init__(self, upstream, downstream):
-        self.upstream = upstream
+    # Ordering of arguments, in hash
+    # matches ordering sent
+    # to controller by the components
+    def __init__(self, downstream, upstream):
         self.downstream = downstream
+        self.upstream = upstream
 
     def equals(self, compare):
         return self.upstream == compare.upstream and self.downstream == compare.downstream
 
     def hash(self):
-        return self.upstream + self.downstream
+        return self.downstream + self.upstream
