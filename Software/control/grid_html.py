@@ -25,13 +25,17 @@ class GridHtml:
                           + "grid-column-start:{1};grid-column-end:{1};"
 
     def __init__(self, grid):
-        self.grid = grid
+        self.grid = grid.lay_out()
         self.html = {}
 
     def get_json(self):
+        container = self.container_element()
+        return [container]
+
+    def container_element(self):
         total_rows = max([position[1] for position in self.grid])
         total_columns = max([position[2] for position in self.grid])
-        next_element = {
+        return {
             "element_type": "div",
             "style": GridHtml.CONTAINER_STYLE_TEMPLATE.format(
                 total_rows,
@@ -40,5 +44,3 @@ class GridHtml:
             "children": [],
             "content": ""
         }
-
-    
