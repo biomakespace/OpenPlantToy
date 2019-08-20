@@ -86,11 +86,6 @@ class CircuitChecker:
     # on/off LEDs, etc
     def check(self):
 
-        # Collect information about
-        # the checked circuit to
-        # pass back via the API
-        CircuitChecker.circuit_information = {}
-
         try:
             # Clear previous response first
             CircuitChecker.connection.reset_input_buffer()
