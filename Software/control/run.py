@@ -22,7 +22,7 @@ def run():
     # The representation of the
     # circuit which is "correct"
     correct_circuit = TargetCircuit()
-    correct_circuit.add_connection(Connection("TRM", "REP"), "TRM must be followed by REP")
+    correct_circuit.add_connection(Connection("REP", "TRM"), "REP must be followed by TRM")
     # [ "TRM" , "REP" ]
     # [ "TRM" , "3UT" ]
     # [ "3UT" , "FRT" ]
