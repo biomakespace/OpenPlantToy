@@ -140,7 +140,9 @@ class CircuitChecker:
                 # Report lack of match, debug information
                 print("NO MATCH")
                 print(CircuitChecker.target_circuit.get_next_hint(assembled_circuit))
-                CircuitChecker.circuit_information['hint'] = CircuitChecker.target_circuit.get_next_hint(assembled_circuit)
+                CircuitChecker.circuit_information['hint'] = CircuitChecker.target_circuit.get_next_hint(
+                    assembled_circuit
+                )
                 # If there have been too many incorrect responses,
                 # set the response for an incorrect circuit
                 if CircuitChecker.incorrect > CircuitChecker.inertia:
@@ -161,7 +163,7 @@ class CircuitChecker:
         #     print("Serial connection seems to be lost.")
 
         # TODO REMOVE (DEBUG)
-        print(circuit_information)
+        print(CircuitChecker.circuit_information)
 
     # Helper method to parse
     # the received responses
