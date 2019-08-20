@@ -47,7 +47,7 @@ class Circuit:
             if check_connection.upstream in [connection.downstream for connection in self.connections]:
                 continue
             else:
-                return check_connection
+                return check_connection.upstream
 
     # Return an array containing
     # any components which are
