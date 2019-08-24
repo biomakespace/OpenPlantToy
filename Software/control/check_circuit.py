@@ -6,10 +6,10 @@ import serial
 import datetime
 
 # Import this package's classes
-from control.circuit import Circuit
-from control.connection import Connection
-from control.grid import Grid
-from control.grid_html import GridHtml
+from circuit import Circuit
+from connection import Connection
+from grid import Grid
+from grid_html import GridHtml
 
 
 # Need to be static methods

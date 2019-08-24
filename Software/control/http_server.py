@@ -5,7 +5,7 @@
 import json
 from http.server import BaseHTTPRequestHandler
 
-from control.check_circuit import get_instance
+from check_circuit import get_instance
 
 
 class RequestHandler(BaseHTTPRequestHandler):
