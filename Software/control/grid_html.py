@@ -30,50 +30,32 @@ class GridHtml:
 
     def get_json(self):
         container = self.container_element()
+        components = ''
         for component in self.grid:
-            container["children"].append(
-                self.component_element(component)
-            )
-        return [container]
+            components += self.component_element(component)
+        return container.format(components)
 
     # Create the div container
     # for the diagram
     def container_element(self):
         total_rows = max([position[1] for position in self.grid])
         total_columns = max([position[2] for position in self.grid])
-        return {
-            "element_type": "div",
-            "attributes": {
-                "style": GridHtml.CONTAINER_STYLE_TEMPLATE.format(
-                    total_rows,
-                    total_columns
-                )
-            },
-            "children": [],
-            "content": ""
-        }
+        return '<div style="{}">{}</div>'.format(
+            GridHtml.CONTAINER_STYLE_TEMPLATE.format(
+                total_rows,
+                total_columns
+            ),
+            '{}'
+        )
 
     # Create a html element
     # for a provided component
     def component_element(self, component):
         # Remember: [id, row, column]
-        text_element = {
-            "element_type": "p",
-            "attributes": {},
-            "children": [],
-            "content": component[0]
-        }
-        element = {
-            "element_type": "div",
-            "attributes": {
-                "style": GridHtml.ITEM_STYLE_TEMPLATE.format(
-                    component[1],
-                    component[2]
-                )
-            },
-            "children": [
-                text_element
-            ],
-            "content": ""
-        }
-        return element
+        return '<div style="{}"><p>{}</p></div>'.format(
+            GridHtml.ITEM_STYLE_TEMPLATE.format(
+                component[1],
+                component[2]
+            ),
+            component[0]
+        )
