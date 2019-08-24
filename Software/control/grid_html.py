@@ -24,6 +24,8 @@ class GridHtml:
     ITEM_STYLE_TEMPLATE = "grid-row-start:{0};grid-row-end:{0};" \
                           + "grid-column-start:{1};grid-column-end:{1};"
 
+    DIAGRAM_ELEMENT_ID = "diagram"
+
     def __init__(self, grid):
         self.grid = grid.lay_out()
         self.html = {}
@@ -40,11 +42,12 @@ class GridHtml:
     def container_element(self):
         total_rows = max([position[1] for position in self.grid])
         total_columns = max([position[2] for position in self.grid])
-        return '<div style="{}">{}</div>'.format(
+        return '<div style="{}" id="{}">{}</div>'.format(
             GridHtml.CONTAINER_STYLE_TEMPLATE.format(
                 total_rows,
                 total_columns
             ),
+            GridHtml.DIAGRAM_ELEMENT_ID,
             '{}'
         )
 
