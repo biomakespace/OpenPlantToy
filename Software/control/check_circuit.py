@@ -167,18 +167,24 @@ class CircuitChecker:
     def parse_responses(self, received):
         # Split by ,
         messages = received.split(",")
+        # Set an empty root component in case
+        # there is nothing at all connected
+        root_component = ""
         # Split by any ;, append results to array
         for message in messages:
-            messages = messages + message.split(";")
-        # Throw out anything with ; in it
-        messages = [m for m in messages if ";" not in m]
-        # Throw out anything without a dash
-        messages = [m for m in messages if "-" in m]
+            # Entry like IDx;IDx-IDy
+            if ";" in message:
+                [root_component, connection] = message.split(";")
+                messages.append(connection)
+        # Throw out anything with ; in it or without - in it
+        messages = [m for m in messages if "-" in m and ";" not in m]
         # --- Add those responses into a circuit representation as received
         # Split the messages by the dash ID1-ID2
         # yielding connections in format [ID1,ID2]
         # NOTE: messages are in order [downstream, upstream]
         circuit = Circuit()
+        # Set the root component
+        circuit.set_root(root_component)
         for message in messages:
             circuit.add_connection(
                 Connection(

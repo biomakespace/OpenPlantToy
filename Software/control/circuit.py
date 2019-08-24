@@ -10,6 +10,7 @@ class Circuit:
 
     def __init__(self):
         self.connections = []
+        self.root = ""
 
     # Returns the number of connections
     # in this circuit
@@ -19,6 +20,10 @@ class Circuit:
     # Add a new connection to the circuit
     def add_connection(self, connection):
         self.connections.append(connection)
+
+    # Set the circuit's root component
+    def set_root(self, root):
+        self.root = root
 
     # Return a hash for the circuit
     # which is the concatenated hashes
@@ -49,6 +54,9 @@ class Circuit:
                 continue
             else:
                 return check_connection.downstream
+        # If none can be found from connections
+        # Return the one that was set
+        return self.root
 
     # Return an array containing
     # any components which are
