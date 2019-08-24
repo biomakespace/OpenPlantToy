@@ -22,7 +22,8 @@ def run():
     # The representation of the
     # circuit which is "correct"
     correct_circuit = TargetCircuit()
-    correct_circuit.add_connection(Connection("REP", "TRM"), "REP must be followed by TRM")
+    correct_circuit.add_connection(Connection("3UT", "REP"), "3UT is the site to which the repressor binds")
+    correct_circuit.add_connection(Connection("REP", "TRM"), "The circuit must be terminated with TRM")
     # [ "TRM" , "REP" ]
     # [ "TRM" , "3UT" ]
     # [ "3UT" , "FRT" ]
