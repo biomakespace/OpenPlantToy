@@ -17,6 +17,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.page_check_circuit()
         elif self.path == "/application.js":
             self.script_application_js()
+        elif self.path == "/check-circuit.css":
+            self.style_check_circuit_css()
         elif self.path == '/api/circuit-information':
             self.api_circuit_information()
         elif self.path == '/':
@@ -24,11 +26,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self.page_not_found()
 
-    # TODO abstract following two
-    # methods into a single
-    # method
-    def page_check_circuit(self):
-        asset_path = 'assets/check-circuit.html'
+    # Helper method to try
+    # to read in a static asset
+    # Return 200 if good
+    # Return 500 if no good
+    # Takes path as argument
+    def try_load_static_asset(self, asset_path):
         body = self.read_file_bytes(asset_path)
         if len(body) > 0:
             self.send_response(200)
@@ -38,16 +41,17 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.send_response(500, 'Internal Server Error')
             self.end_headers()
 
+    def page_check_circuit(self):
+        asset_path = 'assets/check-circuit.html'
+        self.try_load_static_asset(asset_path)
+
     def script_application_js(self):
         asset_path = 'assets/application.js'
-        body = self.read_file_bytes(asset_path)
-        if len(body) > 0:
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(body)
-        else:
-            self.send_response(500, 'Internal Server Error')
-            self.end_headers()
+        self.try_load_static_asset(asset_path)
+
+    def style_check_circuit_css(self):
+        asset_path = 'assets/check-circuit.css'
+        self.try_load_static_asset(asset_path)
 
     def api_circuit_information(self):
         # Get an instance of the checker
