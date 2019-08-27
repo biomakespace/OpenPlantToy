@@ -19,11 +19,26 @@ SERVER_PORT = 12221
 
 
 def run():
+
     # The representation of the
     # circuit which is "correct"
     correct_circuit = TargetCircuit()
-    correct_circuit.add_connection(Connection("3UT", "REP"), "3UT is the site to which the repressor binds")
-    correct_circuit.add_connection(Connection("REP", "TRM"), "The circuit must be terminated with TRM")
+
+    correct_circuit.add_connection(
+        Connection("5UT", "FRT"),
+        "What occurs just upstream from the initiation codon?"
+    )
+
+    correct_circuit.add_connection(
+        Connection("FRT", "3UT"),
+        "What must follow the translation termination codon?"
+    )
+
+    correct_circuit.add_connection(
+        Connection("3UT", "TRM"),
+        "How is the end of translation indicated?"
+    )
+
     # [ "TRM" , "REP" ]
     # [ "TRM" , "3UT" ]
     # [ "3UT" , "FRT" ]
