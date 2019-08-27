@@ -15,3 +15,8 @@ html {
   border-width: 5px;
   border-color: var(--foreground-colour);
 }
+
+.connector {
+  stroke: var(--foreground-colour);
+  stroke-width: 5px;
+}

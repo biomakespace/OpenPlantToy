@@ -35,13 +35,18 @@ class Grid:
         # If there is at least one connected component
         # continue the first branch
         if len(connected) > 0:
-            positions = [component_position] + self.advance_row(connected[0], row, column+1)
+            # A horizontal connector to next component in same row
+            connector = ["-", row, column+1]
+            positions = [component_position, connector] + self.advance_row(connected[0], row, column+2)
             # If there are two connected components
             # continue with a second branch
             if len(connected) == 2:
-                # The row at which to start the
-                # second branch is one past the
+                # The next empty row
+                next_row = second_branch_start_row = max([position[1] for position in positions]) + 1
+                # A vertical connector
+                # placed in a row one past the
                 # maximum reached in the first branch
-                second_branch_start_row = max([position[1] for position in positions]) + 1
+                connector = ["|", next_row, column]
+                positions.append(connector)
                 positions = positions + self.advance_row(connected[1], second_branch_start_row, column)
         return positions
