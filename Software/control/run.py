@@ -26,7 +26,7 @@ def run():
 
     correct_circuit.add_connection(
         Connection("5UT", "FRT"),
-        "What would expect to find after the leader sequence?"
+        "What would you expect to find after the leader sequence?"
     )
 
     correct_circuit.add_connection(
