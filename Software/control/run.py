@@ -52,6 +52,10 @@ def run():
     set_target(correct_circuit)
     circuit_checker = get_instance()
 
+    # Quit if serial can't be opened
+    if not circuit_checker:
+        exit(1)
+
     # Run checking class in thread
     circuit_checking_thread = threading.Thread(target=circuit_checker.run)
     circuit_checking_thread.start()
