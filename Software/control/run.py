@@ -26,7 +26,7 @@ def run():
 
     correct_circuit.add_connection(
         Connection("5UT", "FRT"),
-        "What occurs just upstream from the initiation codon?"
+        "What would expect to find after the leader sequence?"
     )
 
     correct_circuit.add_connection(
@@ -36,7 +36,7 @@ def run():
 
     correct_circuit.add_connection(
         Connection("3UT", "TRM"),
-        "How is the end of translation indicated?"
+        "Which unit signals the end of transcription?"
     )
 
     # [ "TRM" , "REP" ]
