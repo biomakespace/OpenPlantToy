@@ -6,6 +6,7 @@ import json
 from http.server import BaseHTTPRequestHandler
 
 from check_circuit import get_instance
+from list_serial_ports import ListSerialPorts
 
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -23,6 +24,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             "/api/circuit-information": self.api_circuit_information(),
             self.SELECT_SERIAL_PATH: self.page_select_serial(),
             "select-serial.css": self.style_select_serial(),
+            "/api/list-serial-ports": self.api_list_serial_ports(),
             "/": self.root
         }
 
@@ -67,7 +69,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.try_load_static_asset(asset_path)
 
     def page_select_serial(self):
-        pass   # TODO implement
+        asset_path = 'assets/select-serial.html'
+        self.try_load_static_asset(asset_path)
 
     def style_select_serial(self):
         asset_path = 'assets/select-serial.css'
@@ -76,16 +79,30 @@ class RequestHandler(BaseHTTPRequestHandler):
     def api_circuit_information(self):
         # Get an instance of the checker
         circuit_checker = get_instance()
-        # 200 status code
-        self.send_response(200)
-        self.end_headers()
-        # Write out the circuit information in the body
-        # Information is json, so serialise & encode
-        self.wfile.write(
-            json.dumps(
-                circuit_checker.get_circuit_information()
-            ).encode('utf-8')
+        circuit_information = self.format_json(
+            circuit_checker.get_circuit_information()
         )
+        if circuit_information is not None:
+            # 200 status code
+            self.send_response(200)
+            self.end_headers()
+            # Write out the circuit information in the body
+            # Information is json, so serialise & encode
+            self.wfile.write(circuit_information)
+        else:
+            self.internal_server_error()
+
+    def api_list_serial_ports(self):
+        port_list = ListSerialPorts().as_json()
+        formatted = self.format_json(port_list)
+        if formatted is not None:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(
+                formatted
+            )
+        else:
+            self.internal_server_error()
 
     # If page not found
     # Redirect to root
@@ -94,12 +111,24 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_header("Location", "/")
         self.end_headers()
 
+    def internal_server_error(self):
+        self.send_response(500, "Internal Server Error")
+        self.end_headers()
+
     # From root redirect
     # to check circuit path
     def root(self):
         self.send_response(302)
         self.send_header("Location", RequestHandler.CHECK_CIRCUIT_PATH)
         self.end_headers()
+
+    def format_json(self, dictionary):
+        try:
+            return json.dumps(
+                dictionary
+            ).encode('utf-8')
+        except UnicodeEncodeError:
+            return None
 
     #
     # Helper methods
