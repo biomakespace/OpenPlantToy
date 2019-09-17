@@ -14,30 +14,25 @@ class RequestHandler(BaseHTTPRequestHandler):
     CHECK_CIRCUIT_PATH = '/check-circuit'
     SELECT_SERIAL_PATH = '/select-serial'
 
-    PATH_HANDLER_MAP = {}
-
-    def initialise_path_mapping(self):
-        RequestHandler.PATH_HANDLER_MAP = {
-            self.CHECK_CIRCUIT_PATH: self.page_check_circuit,
-            "/application.js": self.script_application_js,
-            "/check-circuit.css": self.style_check_circuit_css,
-            "/api/circuit-information": self.api_circuit_information(),
-            self.SELECT_SERIAL_PATH: self.page_select_serial(),
-            "select-serial.css": self.style_select_serial(),
-            "/api/list-serial-ports": self.api_list_serial_ports(),
-            "/": self.root
-        }
-
     def do_GET(self):
-        # A bit inefficient
-        # Check each time if the map has
-        # been initialised, initialise if not
-        if RequestHandler.PATH_HANDLER_MAP == {}:
-            self.initialise_path_mapping()
-        # Find the handler method
-        # and call it
-        if self.path in RequestHandler.PATH_HANDLER_MAP.keys():
-            RequestHandler.PATH_HANDLER_MAP[self.path]()
+        if self.path == self.CHECK_CIRCUIT_PATH:
+            self.page_check_circuit()
+        elif self.path == "/application.js":
+            self.script_application_js()
+        elif self.path == "/check-circuit.css":
+            self.style_check_circuit_css()
+        elif self.path == "/api/circuit-information":
+            self.api_circuit_information()
+        elif self.path == "/api/list-serial-ports":
+            self.api_list_serial_ports()
+        elif self.path == self.SELECT_SERIAL_PATH:
+            self.page_select_serial()
+        elif self.path == "/select-serial.css":
+            self.style_select_serial(),
+        elif self.path == "/select-serial.js":
+            self.script_select_serial_js(),
+        elif self.path == "/":
+            self.root()
         else:
             self.page_not_found()
 
@@ -76,6 +71,10 @@ class RequestHandler(BaseHTTPRequestHandler):
         asset_path = 'assets/select-serial.css'
         self.try_load_static_asset(asset_path)
 
+    def script_select_serial_js(self):
+        asset_path = 'assets/select-serial.js'
+        self.try_load_static_asset(asset_path)
+
     def api_circuit_information(self):
         # Get an instance of the checker
         circuit_checker = get_instance()
@@ -107,8 +106,8 @@ class RequestHandler(BaseHTTPRequestHandler):
     # If page not found
     # Redirect to root
     def page_not_found(self):
-        self.send_response(302)
-        self.send_header("Location", "/")
+        self.send_response(404)
+        # self.send_header("Location", "/")
         self.end_headers()
 
     def internal_server_error(self):
@@ -119,7 +118,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     # to check circuit path
     def root(self):
         self.send_response(302)
-        self.send_header("Location", RequestHandler.CHECK_CIRCUIT_PATH)
+        self.send_header("Location", RequestHandler.SELECT_SERIAL_PATH)
         self.end_headers()
 
     def format_json(self, dictionary):

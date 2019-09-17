@@ -48,17 +48,17 @@ def run():
     # [ "REP" , "DRP" ]
 
     # Set up checking class
-    open_serial(SERIAL_PATH, BAUD_RATE)
-    set_target(correct_circuit)
-    circuit_checker = get_instance()
+    # open_serial(SERIAL_PATH, BAUD_RATE)
+    # set_target(correct_circuit)
+    # circuit_checker = get_instance()
 
     # Quit if serial can't be opened
-    if not circuit_checker:
-        exit(1)
+    # if not circuit_checker:
+    #     exit(1)
 
     # Run checking class in thread
-    circuit_checking_thread = threading.Thread(target=circuit_checker.run)
-    circuit_checking_thread.start()
+    # circuit_checking_thread = threading.Thread(target=circuit_checker.run)
+    # circuit_checking_thread.start()
 
     # Start web server
     server = HTTPServer(("", SERVER_PORT), RequestHandler)
