@@ -13,17 +13,29 @@ class RequestHandler(BaseHTTPRequestHandler):
     CHECK_CIRCUIT_PATH = '/check-circuit'
     SELECT_SERIAL_PATH = '/select-serial'
 
+    PATH_HANDLER_MAP = {}
+
+    def initialise_path_mapping(self):
+        RequestHandler.PATH_HANDLER_MAP = {
+            self.CHECK_CIRCUIT_PATH: self.page_check_circuit,
+            "/application.js": self.script_application_js,
+            "/check-circuit.css": self.style_check_circuit_css,
+            "/api/circuit-information": self.api_circuit_information(),
+            self.SELECT_SERIAL_PATH: self.page_select_serial(),
+            "select-serial.css": self.style_select_serial(),
+            "/": self.root
+        }
+
     def do_GET(self):
-        if self.path == RequestHandler.CHECK_CIRCUIT_PATH:
-            self.page_check_circuit()
-        elif self.path == "/application.js":
-            self.script_application_js()
-        elif self.path == "/check-circuit.css":
-            self.style_check_circuit_css()
-        elif self.path == '/api/circuit-information':
-            self.api_circuit_information()
-        elif self.path == '/':
-            self.root()
+        # A bit inefficient
+        # Check each time if the map has
+        # been initialised, initialise if not
+        if RequestHandler.PATH_HANDLER_MAP == {}:
+            self.initialise_path_mapping()
+        # Find the handler method
+        # and call it
+        if self.path in RequestHandler.PATH_HANDLER_MAP.keys():
+            RequestHandler.PATH_HANDLER_MAP[self.path]()
         else:
             self.page_not_found()
 
