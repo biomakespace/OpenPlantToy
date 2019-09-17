@@ -1,0 +1,11 @@
+:root {
+  --background-colour: black;
+  --foreground-colour: white;
+}
+
+html {
+  text-align: center;
+  font-family: sans-serif;
+  color: var(--foreground-colour);
+  background-color: var(--background-colour);
+}

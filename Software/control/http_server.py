@@ -11,6 +11,7 @@ from check_circuit import get_instance
 class RequestHandler(BaseHTTPRequestHandler):
 
     CHECK_CIRCUIT_PATH = '/check-circuit'
+    SELECT_SERIAL_PATH = '/select-serial'
 
     def do_GET(self):
         if self.path == RequestHandler.CHECK_CIRCUIT_PATH:
@@ -51,6 +52,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def style_check_circuit_css(self):
         asset_path = 'assets/check-circuit.css'
+        self.try_load_static_asset(asset_path)
+
+    def page_select_serial(self):
+        pass   # TODO implement
+
+    def style_select_serial(self):
+        asset_path = 'assets/select-serial.css'
         self.try_load_static_asset(asset_path)
 
     def api_circuit_information(self):
