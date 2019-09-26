@@ -8,12 +8,11 @@ from http.server import HTTPServer
 
 from target_circuit import TargetCircuit
 from connection import Connection
-from check_circuit import open_serial
+from check_circuit import set_baud_rate
 from check_circuit import set_target
 from check_circuit import get_instance
 from http_server import RequestHandler
 
-SERIAL_PATH = '/dev/ttyUSB0'
 BAUD_RATE = 4800
 SERVER_PORT = 12221
 
@@ -48,17 +47,8 @@ def run():
     # [ "REP" , "DRP" ]
 
     # Set up checking class
-    # open_serial(SERIAL_PATH, BAUD_RATE)
-    # set_target(correct_circuit)
-    # circuit_checker = get_instance()
-
-    # Quit if serial can't be opened
-    # if not circuit_checker:
-    #     exit(1)
-
-    # Run checking class in thread
-    # circuit_checking_thread = threading.Thread(target=circuit_checker.run)
-    # circuit_checking_thread.start()
+    set_baud_rate(BAUD_RATE)
+    set_target(correct_circuit)
 
     # Start web server
     server = HTTPServer(("", SERVER_PORT), RequestHandler)

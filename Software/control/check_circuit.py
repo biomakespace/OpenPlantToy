@@ -1,9 +1,9 @@
 
 # Needed for serial communication
 # with the base unit
-import sys
-import serial
 import datetime
+import serial
+import time
 
 # Import this package's classes
 from circuit import Circuit
@@ -12,20 +12,72 @@ from grid import Grid
 from grid_html import GridHtml
 
 
+RESPONSE_WAIT_TIMEOUT = 1000
+
 # Need to be static methods
+
+def set_baud_rate(baud_rate):
+    CircuitChecker.baud_rate = baud_rate
+
 
 # Try to open the serial port
 # Must be successfully
 # completed before the class
 # can be used
-def open_serial(serial_path, baud_rate):
+def open_serial(serial_path):
+    CircuitChecker.serial_path = serial_path
     try:
-        connection = serial.Serial(serial_path, baud_rate, timeout=1)
+        connection = serial.Serial(
+            CircuitChecker.serial_path,
+            CircuitChecker.baud_rate,
+            timeout=0
+        )
         CircuitChecker.connection = connection
         CircuitChecker.instance = CircuitChecker()
         print("Opened communication with ", CircuitChecker.connection.name)
+        return True
     except serial.SerialException:
-        print("Could not open serial port for communication. Exiting.")
+        print("Could not open serial port for communication.")
+        return False
+
+
+# Helper method to calculate
+# time elapsed in ms
+def milliseconds_elapsed_since(initial_time):
+    time_difference = datetime.datetime.now() - initial_time
+    return (time_difference.seconds * 1000.0) + (time_difference.microseconds / 1000)
+
+
+# Helper method to await response
+def await_response():
+    time.sleep(RESPONSE_WAIT_TIMEOUT/1000.0)
+
+# Check for a valid(ish) response
+# to see if the serial port set
+# is the correct one
+def validate_port():
+    # Send twice (seems to work...)
+    response = ""
+    for i in [0, 1]:
+        await_response()
+        try:
+            # Clear previous response first
+            CircuitChecker.connection.reset_input_buffer()
+            # Then get the connection information from the circuit
+            CircuitChecker.connection.write(CircuitChecker.response.encode('ascii'))
+        except (serial.SerialException, AttributeError):
+            return False
+        # Wait for a response
+        await_response()
+        response_bytes = CircuitChecker.connection.read(10)
+        print(response_bytes)
+        # Components shouldn't emit non ascii characters
+        try:
+            response += response_bytes.decode("ascii")
+        except UnicodeDecodeError:
+            return False
+    # Expect c. three character ID + one semicolon
+    return (2 < len(response)) and ";" in response
 
 
 # Set the target circuit
@@ -53,8 +105,9 @@ def get_instance():
 
 class CircuitChecker:
 
-    # How long to wait for responses in milliseconds
-    RESPONSE_WAIT_TIMEOUT = 1000
+    # Serial parameters
+    serial_path = ""
+    baud_rate = 0
     # Class intended to be singleton
     instance = None
     connection = None
@@ -68,18 +121,13 @@ class CircuitChecker:
     # before turning off the light
     inertia = 2
     # Response sent to circuit
-    response = ";"
+    response = "A,B;"
     # Last received information about circuit
     circuit_information = {}
 
     def __init__(self):
         pass   # Nothing to do
 
-    # Helper method to calculate
-    # time elapsed in ms
-    def milliseconds_elapsed_since(self, initial_time):
-        time_difference = datetime.datetime.now() - initial_time
-        return (time_difference.seconds / 1000.0) + (time_difference.microseconds * 1000)
 
     # Get the current circuit status
     # and send an update to turn
@@ -97,7 +145,7 @@ class CircuitChecker:
 
         # Wait a while to get a bunch of responses
         start_time = datetime.datetime.now()
-        while self.milliseconds_elapsed_since(start_time) < CircuitChecker.RESPONSE_WAIT_TIMEOUT:
+        while milliseconds_elapsed_since(start_time) < RESPONSE_WAIT_TIMEOUT:
             pass
 
         # Get any received response, and decode from bytes to string

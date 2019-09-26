@@ -4,8 +4,11 @@
 
 import json
 from http.server import BaseHTTPRequestHandler
+import threading
 
 from check_circuit import get_instance
+from check_circuit import open_serial
+from check_circuit import validate_port
 from list_serial_ports import ListSerialPorts
 
 
@@ -25,6 +28,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.api_circuit_information()
         elif self.path == "/api/list-serial-ports":
             self.api_list_serial_ports()
+        elif self.path == "/api/confirm-serial-port":
+            self.api_confirm_serial_port()
         elif self.path == self.SELECT_SERIAL_PATH:
             self.page_select_serial()
         elif self.path == "/select-serial.css":
@@ -33,6 +38,12 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.script_select_serial_js(),
         elif self.path == "/":
             self.root()
+        else:
+            self.page_not_found()
+
+    def do_POST(self):
+        if self.path == "/api/confirm-serial-port":
+            self.api_confirm_serial_port()
         else:
             self.page_not_found()
 
@@ -103,14 +114,83 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self.internal_server_error()
 
+    def api_confirm_serial_port(self):
+        body_length = 0
+        post_data = {}
+        serial_path = ""
+        try:
+            body_length = int(self.headers.get("content-length"))
+        except (TypeError, ValueError):
+            self.invalid_request_error("Content length header required")
+            return
+        try:
+            post_data = json.loads(
+                self.rfile.read(body_length).decode('ascii')
+            )
+        except (json.decoder.JSONDecodeError, UnicodeDecodeError):
+            self.invalid_request_error("Could not decode received JSON")
+            return
+        try:
+            serial_path = post_data["path"]
+        except KeyError:
+            self.invalid_request_error("The 'path' key is required but not provided")
+            return
+        # Open and validate serial
+        could_open = open_serial(serial_path)
+        if not could_open:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(
+                self.format_json(
+                    {
+                        "success": False,
+                        "reason": "Could not open serial port"
+                    }
+                )
+            )
+            return
+        port_valid = validate_port()
+        # Try to get the circuit checker, read to spin up thread
+        circuit_checker = get_instance()
+        if not port_valid or not circuit_checker:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(
+                self.format_json(
+                    {
+                        "success": False,
+                        "reason": "Response from serial port inconsistent with circuit components"
+                    }
+                )
+            )
+            return
+        # All (as) good (as we can really guarantee)
+        # Spin up the checking thread
+        circuit_checking_thread = threading.Thread(target=circuit_checker.run, daemon=True)
+        circuit_checking_thread.start()
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(
+            self.format_json(
+                {
+                    "success": True
+                }
+            )
+        )
+
     # If page not found
     # Redirect to root
     def page_not_found(self):
         self.send_response(404)
         self.end_headers()
 
+    # Helper methods for common errors
     def internal_server_error(self):
         self.send_response(500, "Internal Server Error")
+        self.end_headers()
+
+    def invalid_request_error(self, message):
+        self.send_response(400, message)
         self.end_headers()
 
     # From root redirect
