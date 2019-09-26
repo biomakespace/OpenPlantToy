@@ -107,7 +107,6 @@ class RequestHandler(BaseHTTPRequestHandler):
     # Redirect to root
     def page_not_found(self):
         self.send_response(404)
-        # self.send_header("Location", "/")
         self.end_headers()
 
     def internal_server_error(self):
