@@ -14,122 +14,87 @@ using namespace std;
 
 #define BUFFER_SIZE             128
 
-#define MESSAGE_TERMINATOR      ';'
+#define MESSAGE_TERMINATOR      (byte) ';'
 
 // Create software serial object
 SoftwareSerial upstreamSerial(SOFTWARE_SERIAL_RX, SOFTWARE_SERIAL_TX);
 
-// Node to use in linked list
+// Software buffer class
 
-template <typename T>
-class Node {
+class RingBuffer {
   private:
-    T data;
-    Node* next;
+    byte* bytes;
+    int firstByte;
+    int nextByte;
    public:
-    Node(T newData);
-    Node* getNext();
-    void setNext(Node* newNext);
-    T getData();
+    RingBuffer();
+    void push(byte b);
+    bool containsFullMessage();
+    String extractMessage();
 };
 
-// Constructor
-template <typename T>
-Node<T>::Node(T newData) {
-  data = newData; 
+RingBuffer::RingBuffer() {
+  firstByte = 0;
+  nextByte = 0;
+  bytes = new byte[BUFFER_SIZE];
 }
 
-// Setters/getters
-template <typename T>
-Node<T>* Node<T>::getNext() {
-  return next;
-}
-
-template <typename T>
-void Node<T>::setNext(Node* newNext) {
-  next = newNext;
-}
-
-template <typename T>
-T Node<T>::getData() {
-  return data;
-}
-
-//
-
-// Linked List class
-
-template <typename T>
-class LinkedList {
-  private:
-    Node<T>* head;
-    int length;
-   public:
-    LinkedList();
-    Node<T>* bringMeHisHead();
-    void push(Node<T>* newTail);
-    void offWithHisHead();
-    void offWithHisHeads(int heads);
-};
-
-template <typename T>
-LinkedList<T>::LinkedList() {
-  length = 0;
-}
-
-// peek at the head node
-template <typename T>
-Node<T>* LinkedList<T>::bringMeHisHead() {
-  return head;
-}
-
-// Add a node to the end
-template <typename T>
-void LinkedList<T>::push(Node<T>* newTail) {
-  // For an empty list, this becomes the head
-  if (length == 0) {
-    head = newTail;
-  } else {
-    /*  
-     * Walk the list to the end 
-     * Note that since we start at element
-     * 1 with the head, we only need to
-     * make length - 1 hops
-     */
-    Node<T>* currentNode = head;
-    for(int i=0; i<(length-1); i++) {  
-      currentNode = currentNode->getNext();
+void RingBuffer::push(byte b) {
+  bytes[nextByte] = b;
+  // Move on to next space
+  nextByte++;
+  if (nextByte == BUFFER_SIZE) {
+    nextByte = 0;
+  }
+  // Increment start if buffer is overflowing
+  if (firstByte == nextByte) {
+    firstByte++;
+    if (firstByte == BUFFER_SIZE) {
+      firstByte = 0;
     }
-    // Set the new tail as the last element's next
-    currentNode->setNext(newTail);
-    // LinkedList grew by one!
-    length++;
-  }
-  
-}
-
-// Throw away the first node (don't return it)
-template <typename T>
-void LinkedList<T>::offWithHisHead() {
-  if (length > 0) {
-    Node<T>* deleteMe = head;
-    head = head->getNext();
-    delete deleteMe;
-    length--;
   }
 }
 
-// Throw away the first n nodes
-template <typename T>
-void LinkedList<T>::offWithHisHeads(int heads) {
-  for(int i=0; i<heads; i++) {
-    offWithHisHead();
+bool RingBuffer::containsFullMessage() {
+  int i = firstByte;
+  while(i != nextByte) {
+    if (bytes[i] == MESSAGE_TERMINATOR) {
+      // Found a terminator
+      return true;
+    }
+    i++;
+    // Cycle if we reach the end of the buffer
+    if (i == BUFFER_SIZE) {
+      i = 0;
+    }
   }
+  // Didn't find a terminator
+  return false;
 }
 
-// Buffers (linked lists of bytes)
-LinkedList<char>* downstreamBuffer = new LinkedList<char>();
-LinkedList<char>* upstreamBuffer = new LinkedList<char>();
+String RingBuffer::extractMessage() {
+  int i = firstByte;
+  String message = "";
+  while (bytes[i] != MESSAGE_TERMINATOR) {
+    message += char(bytes[i]);
+    i++;
+    // Cycle to start if we reach end of array
+    if (i == BUFFER_SIZE) {
+      i = 0;
+    }
+    /*
+     * If we reach the end of data without
+     * finding a terminator then
+     * there is not actually a full message
+     */
+    if (i == nextByte) {
+      return "";
+    }
+  }
+  // Got a message - shift start to throw it away
+  firstByte = i+1; // +1 to ignore terminator
+  return message;
+}
 
 void setup() {
   Serial.begin(BAUD_RATE);
