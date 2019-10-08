@@ -16,7 +16,7 @@ using namespace std;
 
 #define BUFFER_SIZE             128
 
-#define MESSAGE_TERMINATOR      (byte) ';'
+#define MESSAGE_TERMINATOR      ';'
 
 // Messages from downstream to be handled
 #define IDENTIFY_REQUEST            "WHOGOESTHERE"
@@ -130,19 +130,36 @@ void shiftDownstreamBytes() {
 }
 
 /*
+ * Helper methods to send
+ * serial messages in either direction
+ * Automatically adding the message terminator
+ */
+
+void sendDownstreamMessage(String message) {
+  downstreamSerial.print(message);
+  downstreamSerial.print(MESSAGE_TERMINATOR);
+}
+
+void sendUpstreamMessage(String message) {
+  upstreamSerial.print(message);
+  upstreamSerial.print(MESSAGE_TERMINATOR);
+}
+
+/*
  * Helper methods to handle
  * full messages received
  * from both up and downstream
  */
+ 
 void handleDownstreamMessage() {
-  String message = downstreamSerial.extractMessage();
-  if (message.length > 0) {
-    if (message.equals(IDENTIFY_STRING)) {
+  String message = downstreamBuffer->extractMessage();
+  if (message.length() > 0) {
+    if (message.equals(IDENTIFY_REQUEST)) {
       sendDownstreamMessage(IDENTIFY_RESPONSE);
     } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
       // TODO implement
     }
-    // Do nothing if can't understand message
+    // TODO pass all other messages upstream
   }
 }
 
@@ -165,6 +182,6 @@ void loop() {
     // Handle upstream messages
   }
   if (downstreamBuffer->containsFullMessage()) {
-    downstreamSerial.println(downstreamBuffer->extractMessage());
+    handleDownstreamMessage();
   }
 }
