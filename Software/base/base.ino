@@ -124,11 +124,10 @@ void shiftDownstreamBytes() {
   }
 }
 
-
 void setup() {
   // Start serial ports
-  Serial.begin(BAUD_RATE);
-  while(!Serial) {
+  downStream.begin(BAUD_RATE);
+  while(!downstreamSerial) {
     // Wait to serial to start up
   }
   upstreamSerial.begin(BAUD_RATE);
