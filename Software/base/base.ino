@@ -18,6 +18,8 @@ using namespace std;
 
 #define MESSAGE_TERMINATOR      ';'
 
+#define POLLING_INTERVAL        1000    // Interval of polling components for connectivity, ms
+
 // Messages from downstream to be handled
 #define IDENTIFY_REQUEST            "WHOGOESTHERE"
 #define IDENTIFY_RESPONSE           "OPENPLANTTOY"
@@ -150,7 +152,15 @@ void sendUpstreamMessage(String message) {
  * full messages received
  * from both up and downstream
  */
- 
+
+/*
+ * The command last sent by the
+ * controller will be stored here
+ * and passed to the components when
+ * polling them for connectivity
+ */
+String lastReceivedCommand = "";
+
 void handleDownstreamMessage() {
   String message = downstreamBuffer->extractMessage();
   if (message.length() > 0) {
@@ -158,9 +168,36 @@ void handleDownstreamMessage() {
       sendDownstreamMessage(IDENTIFY_RESPONSE);
     } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
       // TODO implement
+    } else {
+      // Assume anything else is a new command for the components
+      lastReceivedCommand = message;
     }
-    // TODO pass all other messages upstream
   }
+}
+
+/*
+ * Helper methods to manage polling 
+ * of components for connectivity
+ */
+
+// Time of last polling
+unsigned long lastPollingTime = millis();
+
+// Save accumulated responses from circuit here
+String previousResponses = "";
+String currentResponses = "";
+
+bool pollingDue() {
+  return (millis() - lastPollingTime) > POLLING_INTERVAL;
+}
+
+void pollComponents() {
+  // Save existing responses as 'previous'
+  previousResponses = currentResponses;
+  // Reset current responses ready to receive new ones
+  currentResponses = "";
+  // Pass command to components (will automatically trigger response)
+  sendUpstreamMessage(lastReceivedCommand);
 }
 
 void setup() {
@@ -176,12 +213,22 @@ void setup() {
 }
 
 void loop() {
+
+  // Handle serial in
   shiftUpstreamBytes();
   shiftDownstreamBytes();
-  if (upstreamBuffer->containsFullMessage()) {
-    // Handle upstream messages
-  }
+
+  // Handle messages from main controller
   if (downstreamBuffer->containsFullMessage()) {
     handleDownstreamMessage();
   }
+
+  // Handle messages from components
+  if (upstreamBuffer->containsFullMessage()) {
+    // Handle upstream messages
+  }
+
+  // Check if a new polling message is due
+  
+
 }
