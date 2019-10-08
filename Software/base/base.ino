@@ -96,12 +96,23 @@ String RingBuffer::extractMessage() {
   return message;
 }
 
+/*
+ * End of RingBuffer class
+ */
+
+RingBuffer upstreamBuffer;
+RingBuffer downstreamBuffer;
+
 void setup() {
+  // Start serial ports
   Serial.begin(BAUD_RATE);
   while(!Serial) {
     // Wait to serial to start up
   }
   upstreamSerial.begin(BAUD_RATE);
+  // Initialise software buffers
+  upstreamBuffer = new RingBuffer();
+  downstreamBuffer = new RingBuffer();
 }
 
 void loop() {
