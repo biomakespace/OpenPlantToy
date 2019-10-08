@@ -229,6 +229,8 @@ void loop() {
   }
 
   // Check if a new polling message is due
-  
+  if (pollingDue()) {
+    pollComponents();
+  }
 
 }
