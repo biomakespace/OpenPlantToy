@@ -5,6 +5,8 @@ using namespace std;
 
 #include <SoftwareSerial.h>
 
+#define downstreamSerial        Serial
+
 #define SOFTWARE_SERIAL_TX      2
 #define SOFTWARE_SERIAL_RX      3
                                   
@@ -100,8 +102,28 @@ String RingBuffer::extractMessage() {
  * End of RingBuffer class
  */
 
-RingBuffer upstreamBuffer;
-RingBuffer downstreamBuffer;
+// Declare buffers
+RingBuffer *upstreamBuffer;
+RingBuffer *downstreamBuffer;
+
+/*
+ * Helper methods for shifting
+ * from hardware to software
+ * serial buffers
+ */
+
+void shiftUpstreamBytes() {
+  while (upstreamSerial.available() > 0) {
+    upstreamBuffer->push(upstreamSerial.read());    
+  }
+}
+
+void shiftDownstreamBytes() {
+  while (downstreamSerial.available() > 0) {
+    downstreamBuffer->push(downstreamSerial.read());
+  }
+}
+
 
 void setup() {
   // Start serial ports
@@ -117,5 +139,5 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  
 }
