@@ -22,7 +22,7 @@ using namespace std;
 
 // Messages from downstream to be handled
 #define IDENTIFY_REQUEST            "WHOGOESTHERE"
-#define IDENTIFY_RESPONSE           "OPENPLANTTOY"
+#define IDENTIFY_RESPONSE           "{\"msg\":\"OPENPLANTTOY\"}"    // Respond in json for easy parsing
 #define LATEST_RESPONSES_REQUEST    "LATEST"
 
 // Create software serial object
@@ -148,34 +148,6 @@ void sendUpstreamMessage(String message) {
 }
 
 /*
- * Helper methods to handle
- * full messages received
- * from both up and downstream
- */
-
-/*
- * The command last sent by the
- * controller will be stored here
- * and passed to the components when
- * polling them for connectivity
- */
-String lastReceivedCommand = "";
-
-void handleDownstreamMessage() {
-  String message = downstreamBuffer->extractMessage();
-  if (message.length() > 0) {
-    if (message.equals(IDENTIFY_REQUEST)) {
-      sendDownstreamMessage(IDENTIFY_RESPONSE);
-    } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
-      // TODO implement, remember to close array ] !
-    } else {
-      // Assume anything else is a new command for the components
-      lastReceivedCommand = message;
-    }
-  }
-}
-
-/*
  * Helper methods to manage polling 
  * of components for connectivity
  */
@@ -188,6 +160,16 @@ String previousRoot = "";
 String currentRoot = "";
 String previousConnections = "";
 String currentConnections = "";
+
+/*
+ * The command last sent by the
+ * controller will be stored here
+ * and passed to the components when
+ * polling them for connectivity
+ * Note: read from in polling,
+ * written to in message handling
+ */
+String lastReceivedCommand = "";
 
 bool pollingDue() {
   return (millis() - lastPollingTime) > POLLING_INTERVAL;
@@ -202,6 +184,35 @@ void pollComponents() {
   currentConnections = "[";   // Open the 'array'
   // Pass command to components (will automatically trigger response)
   sendUpstreamMessage(lastReceivedCommand);
+}
+
+/*
+ * Helper methods to handle
+ * full messages received
+ * from both up and downstream
+ */
+
+// Wraps the circuit information in JSON for the response
+void sendCircuitInformation() {
+  sendDownstreamMessage(
+    "{\"root\":\"" + previousRoot                   // Just a string
+    + "\",\"connections\":" + previousConnections   // String representation of an array of strings
+    + "]}"
+  );
+}
+
+void handleDownstreamMessage() {
+  String message = downstreamBuffer->extractMessage();
+  if (message.length() > 0) {
+    if (message.equals(IDENTIFY_REQUEST)) {
+      sendDownstreamMessage(IDENTIFY_RESPONSE);
+    } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
+      sendCircuitInformation();
+    } else {
+      // Assume anything else is a new command for the components
+      lastReceivedCommand = message;
+    }
+  }
 }
 
 void setup() {
