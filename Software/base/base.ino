@@ -167,7 +167,7 @@ void handleDownstreamMessage() {
     if (message.equals(IDENTIFY_REQUEST)) {
       sendDownstreamMessage(IDENTIFY_RESPONSE);
     } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
-      // TODO implement
+      // TODO implement, remember to close array ] !
     } else {
       // Assume anything else is a new command for the components
       lastReceivedCommand = message;
@@ -184,8 +184,10 @@ void handleDownstreamMessage() {
 unsigned long lastPollingTime = millis();
 
 // Save accumulated responses from circuit here
-String previousResponses = "";
-String currentResponses = "";
+String previousRoot = "";
+String currentRoot = "";
+String previousConnections = "";
+String currentConnections = "";
 
 bool pollingDue() {
   return (millis() - lastPollingTime) > POLLING_INTERVAL;
@@ -193,9 +195,11 @@ bool pollingDue() {
 
 void pollComponents() {
   // Save existing responses as 'previous'
-  previousResponses = currentResponses;
+  previousRoot = currentRoot;
+  previousConnections = currentConnections;
   // Reset current responses ready to receive new ones
-  currentResponses = "";
+  currentRoot = "";
+  currentConnections = "[";   // Open the 'array'
   // Pass command to components (will automatically trigger response)
   sendUpstreamMessage(lastReceivedCommand);
 }
@@ -225,7 +229,14 @@ void loop() {
 
   // Handle messages from components
   if (upstreamBuffer->containsFullMessage()) {
-    // Handle upstream messages
+    String message = upstreamBuffer->extractMessage();
+    // Case 1: IDx -> no dash, closest component, i.e. root
+    if (message.indexOf("-") < 0 ) {
+      currentRoot = message;
+    } else {
+      // 2. IDx-IDy -> has dash, connection, add to responses
+      currentConnections += "\"" + message + "\",";
+    }
   }
 
   // Check if a new polling message is due
