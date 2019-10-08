@@ -18,6 +18,11 @@ using namespace std;
 
 #define MESSAGE_TERMINATOR      (byte) ';'
 
+// Messages from downstream to be handled
+#define IDENTIFY_REQUEST            "WHOGOESTHERE"
+#define IDENTIFY_RESPONSE           "OPENPLANTTOY"
+#define LATEST_RESPONSES_REQUEST    "LATEST"
+
 // Create software serial object
 SoftwareSerial upstreamSerial(SOFTWARE_SERIAL_RX, SOFTWARE_SERIAL_TX);
 
@@ -121,6 +126,23 @@ void shiftUpstreamBytes() {
 void shiftDownstreamBytes() {
   while (downstreamSerial.available() > 0) {
     downstreamBuffer->push(downstreamSerial.read());
+  }
+}
+
+/*
+ * Helper methods to handle
+ * full messages received
+ * from both up and downstream
+ */
+void handleDownstreamMessage() {
+  String message = downstreamSerial.extractMessage();
+  if (message.length > 0) {
+    if (message.equals(IDENTIFY_STRING)) {
+      sendDownstreamMessage(IDENTIFY_RESPONSE);
+    } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
+      // TODO implement
+    }
+    // Do nothing if can't understand message
   }
 }
 
