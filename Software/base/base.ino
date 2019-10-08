@@ -126,7 +126,7 @@ void shiftDownstreamBytes() {
 
 void setup() {
   // Start serial ports
-  downStream.begin(BAUD_RATE);
+  downstreamSerial.begin(BAUD_RATE);
   while(!downstreamSerial) {
     // Wait to serial to start up
   }
@@ -137,6 +137,12 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
+  shiftUpstreamBytes();
+  shiftDownstreamBytes();
+  if (upstreamBuffer->containsFullMessage()) {
+    // Handle upstream messages
+  }
+  if (downstreamBuffer->containsFullMessage()) {
+    downstreamSerial.println(downstreamBuffer->extractMessage());
+  }
 }
