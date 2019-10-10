@@ -18,7 +18,7 @@ using namespace std;
 
 #define MESSAGE_TERMINATOR      ';'
 
-#define POLLING_INTERVAL        1000    // Interval of polling components for connectivity, ms
+#define POLLING_INTERVAL        3000    // Interval of polling components for connectivity, ms
 
 // Messages from downstream to be handled
 #define IDENTIFY_REQUEST            "WHOGOESTHERE"
@@ -184,6 +184,8 @@ void pollComponents() {
   currentConnections = "[";   // Open the 'array'
   // Pass command to components (will automatically trigger response)
   sendUpstreamMessage(lastReceivedCommand);
+  // Update last polling time
+  lastPollingTime = millis();
 }
 
 /*
@@ -219,7 +221,7 @@ void setup() {
   // Start serial ports
   downstreamSerial.begin(BAUD_RATE);
   while(!downstreamSerial) {
-    // Wait to serial to start up
+    // Wait for serial to start up
   }
   upstreamSerial.begin(BAUD_RATE);
   // Initialise software buffers
@@ -239,7 +241,7 @@ void loop() {
   }
 
   // Handle messages from components
-  if (upstreamBuffer->containsFullMessage()) {
+  while (upstreamBuffer->containsFullMessage()) {
     String message = upstreamBuffer->extractMessage();
     // Case 1: IDx -> no dash, closest component, i.e. root
     if (message.indexOf("-") < 0 ) {
