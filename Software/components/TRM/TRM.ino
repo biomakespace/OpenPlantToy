@@ -141,29 +141,31 @@ void loop() {
   /*
    * If something was received from upstream
    */
-  if( passData.length() > 0 ) {
+  if(passData.length() > 0) {
     
     /*
      * Format of received string can be
      * either ID1;
-     * or     ID1-ID2,
+     * or     ID1-ID2;
      * In the latter case, just pass along downstream
      * In the former case, construct new string
      */
 
     /*
-     * Firstly find if there is a semicolon
+     * Firstly find if there is a hyphen
      * and if so where it is
+     * Messages of format ID1-ID2; will have
+     * messages of format ID1; will not
      */
-    charIndex = passData.indexOf( ";" ) ;
+    charIndex = passData.indexOf("-");
 
     // If not found, should be -1
-    if(charIndex < 0) {
-      // Just pass along the string
+    if(charIndex >= 0) {
+      // Just pass along the message ID1-ID2
       Serial.print(passData);
     } else {
       // Generate a string this unitId-upstream unitId,
-      thisConnection = unitId + String( "-" ) + passData.substring( 0 , charIndex ) + "," ;
+      thisConnection = unitId + String("-") + passData.substring(0, charIndex); // + ";";
       // Pass that string downstream
       Serial.print(thisConnection);
     }
