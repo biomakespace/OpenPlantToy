@@ -2,6 +2,7 @@
 # Needed for serial communication
 # with the base unit
 import datetime
+import json
 import serial
 import time
 
@@ -13,6 +14,10 @@ from grid_html import GridHtml
 
 
 RESPONSE_WAIT_TIMEOUT = 1000
+LATEST_CONNECTIONS_REQUEST = "LATEST".encode("ASCII")
+IDENTIFY_REQUEST = "WHOGOESTHERE".encode("ASCII")
+IDENTIFY_RESPONSE = "OPENPLANTTOY".encode("ASCII")
+
 
 # Need to be static methods
 
@@ -52,32 +57,35 @@ def milliseconds_elapsed_since(initial_time):
 def await_response():
     time.sleep(RESPONSE_WAIT_TIMEOUT/1000.0)
 
+
 # Check for a valid(ish) response
 # to see if the serial port set
 # is the correct one
 def validate_port():
     # Send twice (seems to work...)
-    response = ""
     for i in [0, 1]:
         await_response()
         try:
             # Clear previous response first
             CircuitChecker.connection.reset_input_buffer()
             # Then get the connection information from the circuit
-            CircuitChecker.connection.write(CircuitChecker.response.encode('ascii'))
+            CircuitChecker.connection.write(IDENTIFY_REQUEST)
         except (serial.SerialException, AttributeError):
             return False
         # Wait for a response
         await_response()
-        response_bytes = CircuitChecker.connection.read(10)
+        response_bytes = CircuitChecker.connection.read(50)
         print(response_bytes)
-        # Components shouldn't emit non ascii characters
-        try:
-            response += response_bytes.decode("ascii")
-        except UnicodeDecodeError:
-            return False
-    # Expect c. three character ID + one semicolon
-    return (2 < len(response)) and ";" in response
+    # Should return json, only ascii, has msg key, specific value for that key
+    try:
+        response_raw = response_bytes.decode("ascii")
+        response_parsed = json.loads(response_raw)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return False
+    if "msg" not in response_parsed:
+        return False
+    else:
+        return response_parsed["msg"] == IDENTIFY_RESPONSE
 
 
 # Set the target circuit
