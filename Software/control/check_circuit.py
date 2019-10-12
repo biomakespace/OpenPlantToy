@@ -13,7 +13,7 @@ from grid import Grid
 from grid_html import GridHtml
 
 
-RESPONSE_WAIT_TIMEOUT = 1000
+TIME_BETWEEN_CHECKS = 1000
 LATEST_CONNECTIONS_REQUEST = "LATEST".encode("ASCII")
 IDENTIFY_REQUEST = "WHOGOESTHERE".encode("ASCII")
 IDENTIFY_RESPONSE = "OPENPLANTTOY".encode("ASCII")
@@ -55,7 +55,7 @@ def milliseconds_elapsed_since(initial_time):
 
 # Helper method to await response
 def await_response():
-    time.sleep(RESPONSE_WAIT_TIMEOUT/1000.0)
+    time.sleep(TIME_BETWEEN_CHECKS/1000.0)
 
 
 # Check for a valid(ish) response
@@ -136,7 +136,6 @@ class CircuitChecker:
     def __init__(self):
         pass   # Nothing to do
 
-
     # Get the current circuit status
     # and send an update to turn
     # on/off LEDs, etc
@@ -147,13 +146,15 @@ class CircuitChecker:
             CircuitChecker.connection.reset_input_buffer()
             # Then get the connection information from the circuit
             CircuitChecker.connection.write(CircuitChecker.response.encode('ascii'))
+            # Then place a request for the latest circuit information
+            CircuitChecker.connection.write(LATEST_CONNECTIONS_REQUEST)
         except serial.SerialException:
             # TODO REMOVE (DEBUG)
             print("Serial connection seems to be lost.")
 
         # Wait a while to get a bunch of responses
         start_time = datetime.datetime.now()
-        while milliseconds_elapsed_since(start_time) < RESPONSE_WAIT_TIMEOUT:
+        while milliseconds_elapsed_since(start_time) < TIME_BETWEEN_CHECKS:
             pass
 
         # Get any received response, and decode from bytes to string
@@ -221,33 +222,31 @@ class CircuitChecker:
     # and turn them into
     # a Circuit representation
     def parse_responses(self, received):
-        # Split by ,
-        messages = received.split(",")
-        # Set an empty root component in case
-        # there is nothing at all connected
-        root_component = ""
-        # Split by any ;, append results to array
-        for message in messages:
-            # Entry like IDx;IDx-IDy
-            if ";" in message:
-                [root_component, connection] = message.split(";")
-                messages.append(connection)
-        # Throw out anything with ; in it or without - in it
-        messages = [m for m in messages if "-" in m and ";" not in m]
-        # --- Add those responses into a circuit representation as received
-        # Split the messages by the dash ID1-ID2
-        # yielding connections in format [ID1,ID2]
-        # NOTE: messages are in order [downstream, upstream]
+        # Should get json back
+        try:
+            response = json.loads(received)
+        except json.JSONDecodeError:
+            # If it fails, return 'null' circuit
+            return Circuit()
+        # Start building the circuit
         circuit = Circuit()
-        # Set the root component
+        # Check for root_component
+        if "root" in response:
+            root_component = response["root"]
+        else:
+            root_component = ""
         circuit.set_root(root_component)
-        for message in messages:
-            circuit.add_connection(
-                Connection(
-                    message.split("-")[0],
-                    message.split("-")[1]
-                )
-            )
+        # Get the connections
+        if "connections" in response:
+            for connection in response["connections"]:
+                # Double check the format is correct
+                if "-" in connection:
+                    circuit.add_connection(
+                        Connection(
+                            connection.split("-")[0],
+                            connection.split("-")[1]
+                        )
+                    )
         return circuit
 
     def run(self):
