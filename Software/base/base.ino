@@ -11,14 +11,14 @@ using namespace std;
 #define SOFTWARE_SERIAL_RX      3
                                   
 #define BAUD_RATE               4800
-                                    
+
 #define RESET_LIGHT_PIN         13
 
 #define BUFFER_SIZE             128
 
 #define MESSAGE_TERMINATOR      ';'
 
-#define POLLING_INTERVAL        3000    // Interval of polling components for connectivity, ms
+#define POLLING_INTERVAL        500    // Interval of polling components for connectivity, ms
 
 // Messages from downstream to be handled
 #define IDENTIFY_REQUEST            "WHOGOESTHERE"
@@ -181,7 +181,7 @@ void pollComponents() {
   previousConnections = currentConnections;
   // Reset current responses ready to receive new ones
   currentRoot = "";
-  currentConnections = "[";   // Open the 'array'
+  currentConnections = "";   // Open the 'array'
   // Pass command to components (will automatically trigger response)
   sendUpstreamMessage(lastReceivedCommand);
   // Update last polling time
@@ -198,7 +198,7 @@ void pollComponents() {
 void sendCircuitInformation() {
   sendDownstreamMessage(
     "{\"root\":\"" + previousRoot                   // Just a string
-    + "\",\"connections\":" + previousConnections   // String representation of an array of strings
+    + "\",\"connections\":[" + previousConnections   // String representation of an array of strings
     + "]}"
   );
 }
@@ -244,7 +244,7 @@ void loop() {
   while (upstreamBuffer->containsFullMessage()) {
     String message = upstreamBuffer->extractMessage();
     // Case 1: IDx -> no dash, closest component, i.e. root
-    if (message.indexOf("-") < 0 ) {
+    if (message.indexOf("-") < 0) {
       currentRoot = message;
     } else {
       // 2. IDx-IDy -> has dash, connection, add to responses
