@@ -139,7 +139,6 @@ void shiftDownstreamBytes() {
 
 void sendDownstreamMessage(String message) {
   downstreamSerial.print(message);
-  downstreamSerial.print(MESSAGE_TERMINATOR);
 }
 
 void sendUpstreamMessage(String message) {

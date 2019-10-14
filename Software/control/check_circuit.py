@@ -79,7 +79,6 @@ def validate_port():
     # Should return json, only ascii, has msg key, specific value for that key
     try:
         response_raw = response_bytes.decode("ascii")
-        response_raw = response_raw.replace(";", "")
         response_parsed = json.loads(response_raw)
     except (UnicodeDecodeError, json.JSONDecodeError):
         return False
@@ -159,7 +158,7 @@ class CircuitChecker:
             pass
 
         # Get any received response, and decode from bytes to string
-        assembled_circuit = self.parse_responses(CircuitChecker.connection.read(50).decode("ascii"))
+        assembled_circuit = self.parse_responses(CircuitChecker.connection.read(100).decode("ascii"))
 
         # TODO REMOVE (DEBUG)
         print("From circuit: ", assembled_circuit.hash())
