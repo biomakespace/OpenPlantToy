@@ -14,9 +14,9 @@ from grid_html import GridHtml
 
 
 TIME_BETWEEN_CHECKS = 1000
-LATEST_CONNECTIONS_REQUEST = "LATEST".encode("ASCII")
-IDENTIFY_REQUEST = "WHOGOESTHERE".encode("ASCII")
-IDENTIFY_RESPONSE = "OPENPLANTTOY".encode("ASCII")
+LATEST_CONNECTIONS_REQUEST = "LATEST;".encode("ASCII")
+IDENTIFY_REQUEST = "WHOGOESTHERE;".encode("ASCII")
+IDENTIFY_RESPONSE = "OPENPLANTTOY"
 
 
 # Need to be static methods
@@ -79,6 +79,7 @@ def validate_port():
     # Should return json, only ascii, has msg key, specific value for that key
     try:
         response_raw = response_bytes.decode("ascii")
+        response_raw = response_raw.replace(";", "")
         response_parsed = json.loads(response_raw)
     except (UnicodeDecodeError, json.JSONDecodeError):
         return False
