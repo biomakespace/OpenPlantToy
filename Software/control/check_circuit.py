@@ -75,10 +75,11 @@ def validate_port():
         # Wait for a response
         await_response()
         response_bytes = CircuitChecker.connection.read(50)
-        print(response_bytes)
+        # DEBUG TODO REMOVE
+        # print(response_bytes)
     # Should return json, only ascii, has msg key, specific value for that key
     try:
-        response_raw = response_bytes.decode("ascii")
+        response_raw = response_bytes.decode("ascii").split(";")[0]
         response_parsed = json.loads(response_raw)
     except (UnicodeDecodeError, json.JSONDecodeError):
         return False
@@ -161,7 +162,7 @@ class CircuitChecker:
         assembled_circuit = self.parse_responses(CircuitChecker.connection.read(100).decode("ascii"))
 
         # TODO REMOVE (DEBUG)
-        print("From circuit: ", assembled_circuit.hash())
+        # print("From circuit: ", assembled_circuit.hash())
 
         CircuitChecker.circuit_information["html"] = GridHtml(Grid(assembled_circuit)).get_json()
 
@@ -181,7 +182,7 @@ class CircuitChecker:
                 CircuitChecker.circuit_information['match'] = True
                 CircuitChecker.circuit_information['hint'] = None
                 # TODO REMOVE (DEBUG)
-                print("MATCH")
+                # print("MATCH")
                 # Set response for correct circuit
                 CircuitChecker.response = "TRM,ON;"
             # If reported circuit does not match the correct circuit
@@ -190,8 +191,8 @@ class CircuitChecker:
                 CircuitChecker.incorrect += 1
                 CircuitChecker.circuit_information['match'] = False
                 # Report lack of match, debug information
-                print("NO MATCH")
-                print(CircuitChecker.target_circuit.get_next_hint(assembled_circuit))
+                # print("NO MATCH")
+                # print(CircuitChecker.target_circuit.get_next_hint(assembled_circuit))
                 CircuitChecker.circuit_information['hint'] = CircuitChecker.target_circuit.get_next_hint(
                     assembled_circuit
                 )
@@ -215,17 +216,21 @@ class CircuitChecker:
         #     print("Serial connection seems to be lost.")
 
         # TODO REMOVE (DEBUG)
-        print(CircuitChecker.circuit_information)
+        # print(CircuitChecker.circuit_information)
 
     # Helper method to parse
     # the received responses
     # and turn them into
     # a Circuit representation
     def parse_responses(self, received):
+        print(received)
+        # Only take up to semicolon
+        received = received.split(";")[0]
         # Should get json back
         try:
             response = json.loads(received)
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            print(e)
             # If it fails, return 'null' circuit
             return Circuit()
         # Start building the circuit
