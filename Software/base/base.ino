@@ -217,6 +217,29 @@ void handleDownstreamMessage() {
   }
 }
 
+void initialiseBuffers() {
+  for (byte i = 0; i < COMMAND_STORE_SIZE; i++) {
+    lastReceivedCommand[i] = 0;
+  }
+  for (byte i = 0; i < RESPONSE_BUFFER_SIZE; i++) {
+    previousResponses[i] = 0;
+  }
+  for (byte i = 0; i < RESPONSE_BUFFER_SIZE; i++) {
+    currentResponses[i] = 0;
+  }
+  for (byte i = 0; i < ROOT_BUFFER_SIZE; i++) {
+    previousRoot[i] = 0;
+  } 
+  for (byte i = 0; i < ROOT_BUFFER_SIZE; i++) {
+    currentRoot[i] = 0;
+  }  
+  lastReceivedCommandPointer = 0;
+  previousResponsesPointer = 0;
+  currentResponsesPointer = 0;
+  previousRootPointer = 0;
+  currentRootPointer = 0;
+}
+
 void setup() {
   // Start serial ports
   downstreamSerial.begin(BAUD_RATE);
@@ -227,6 +250,7 @@ void setup() {
   // Initialise software buffers
   upstreamBuffer = new RingBuffer();
   downstreamBuffer = new RingBuffer();
+  initialiseBuffers();
 }
 
 void loop() {
