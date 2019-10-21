@@ -14,11 +14,14 @@ using namespace std;
 
 #define RESET_LIGHT_PIN         13
 
-#define BUFFER_SIZE             128
-
 #define MESSAGE_TERMINATOR      ';'
 
-#define POLLING_INTERVAL        500    // Interval of polling components for connectivity, ms
+#define POLLING_INTERVAL        1000    // Interval of polling components for connectivity, ms
+
+#define BUFFER_SIZE               128
+#define COMMAND_STORE_SIZE        32    // Buffer to hold last received command
+#define RESPONSE_BUFFER_SIZE      128   // Buffer to hold accumulated responses
+#define ROOT_BUFFER_SIZE          16    // Buffer to hold name of root component
 
 // Messages from downstream to be handled
 #define IDENTIFY_REQUEST            "WHOGOESTHERE"
@@ -139,6 +142,7 @@ void shiftDownstreamBytes() {
 
 void sendDownstreamMessage(String message) {
   downstreamSerial.print(message);
+  downstreamSerial.print(MESSAGE_TERMINATOR);
 }
 
 void sendUpstreamMessage(String message) {
@@ -154,21 +158,17 @@ void sendUpstreamMessage(String message) {
 // Time of last polling
 unsigned long lastPollingTime = millis();
 
-// Save accumulated responses from circuit here
-String previousRoot = "";
-String currentRoot = "";
-String previousConnections = "";
-String currentConnections = "";
-
-/*
- * The command last sent by the
- * controller will be stored here
- * and passed to the components when
- * polling them for connectivity
- * Note: read from in polling,
- * written to in message handling
- */
-String lastReceivedCommand = "";
+// Various buffers to store responses, commands, etc
+byte *lastReceivedCommand = new byte[COMMAND_STORE_SIZE];
+byte *previousResponses = new byte[RESPONSE_BUFFER_SIZE];
+byte *currentResponses = new byte[RESPONSE_BUFFER_SIZE];
+byte *previousRoot = new byte[ROOT_BUFFER_SIZE];
+byte *currentRoot = new byte[ROOT_BUFFER_SIZE];
+byte lastReceivedCommandPointer;
+byte previousResponsesPointer;
+byte currentResponsesPointer;
+byte previousRootPointer;
+byte currentRootPointer;
 
 bool pollingDue() {
   return (millis() - lastPollingTime) > POLLING_INTERVAL;
@@ -205,6 +205,7 @@ void sendCircuitInformation() {
 void handleDownstreamMessage() {
   String message = downstreamBuffer->extractMessage();
   if (message.length() > 0) {
+    Serial.print(message);
     if (message.equals(IDENTIFY_REQUEST)) {
       sendDownstreamMessage(IDENTIFY_RESPONSE);
     } else if (message.equals(LATEST_RESPONSES_REQUEST)) {
@@ -247,7 +248,11 @@ void loop() {
       currentRoot = message;
     } else {
       // 2. IDx-IDy -> has dash, connection, add to responses
-      currentConnections += "\"" + message + "\",";
+      if (currentConnections.length() > 0) {
+        // Preface with comma if there is already something in the string
+        currentConnections += ",";
+      }
+      currentConnections += "\"" + message + "\"";
     }
   }
 
