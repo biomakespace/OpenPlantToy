@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="later_component_with_led.svg">
+   sodipodi:docname="LED.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="167.01044"
-     inkscape:cy="308.59808"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="475.88512"
+     inkscape:cy="400.73178"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -812,130 +812,77 @@
       </g>
     </g>
     <g
-       id="g4807"
-       transform="translate(-452.85714,525.71429)">
+       id="g502">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:GentiumAlt;-inkscape-font-specification:GentiumAlt;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         x="524.16718"
-         y="209.21494"
+         x="71.310036"
+         y="734.9292"
          id="text4727"><tspan
            sodipodi:role="line"
            id="tspan4729"
-           x="524.16718"
-           y="209.21494"
+           x="71.310036"
+           y="734.9292"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato">TX</tspan></text>
       <text
          id="text4795"
-         y="209.21494"
-         x="550.87463"
+         y="734.9292"
+         x="98.017494"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:GentiumAlt;-inkscape-font-specification:GentiumAlt;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato"
-           y="209.21494"
-           x="550.87463"
+           y="734.9292"
+           x="98.017494"
            id="tspan4797"
            sodipodi:role="line">RX</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:GentiumAlt;-inkscape-font-specification:GentiumAlt;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         x="571.98285"
-         y="209.21494"
+         x="119.12571"
+         y="734.9292"
          id="text4799"><tspan
            sodipodi:role="line"
            id="tspan4801"
-           x="571.98285"
-           y="209.21494"
+           x="119.12571"
+           y="734.9292"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato">PWR</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:GentiumAlt;-inkscape-font-specification:GentiumAlt;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         x="610.68652"
-         y="209.21494"
+         x="157.82938"
+         y="734.9292"
          id="text4803"><tspan
            sodipodi:role="line"
            id="tspan4805"
-           x="610.68652"
-           y="209.21494"
+           x="157.82938"
+           y="734.9292"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato">L</tspan></text>
     </g>
-    <g
-       id="g4827"
-       transform="translate(-278.16703,522.14286)">
-      <rect
-         y="292.13684"
-         x="370.48898"
-         height="32.593525"
-         width="56.164955"
-         id="rect4817"
-         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.54933405;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <circle
-         r="11.156113"
-         cy="308.43359"
-         cx="398.57147"
-         id="path4825"
-         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    </g>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4831"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(-444.77662,455.85715)"><flowRegion
-         id="flowRegion4833"
-         style="font-family:sans-serif"><rect
-           id="rect4835"
-           width="25.71426"
-           height="17.857134"
-           x="553.57141"
-           y="339.14792"
-           style="font-size:12.5px;font-family:sans-serif" /></flowRegion><flowPara
-         id="flowPara4837"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Lato;-inkscape-font-specification:'Lato Bold'">RST</flowPara></flowRoot>    <g
-       id="g4876"
-       transform="matrix(0.88003087,0,0,0.88003087,-172.06518,550.58567)">
-      <rect
-         transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)"
-         y="31.426575"
-         x="498.93674"
-         height="73.9832"
-         width="78.962837"
-         id="rect4839"
-         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:13.90660858;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <flowRoot
-         transform="translate(153.4615,-284.85301)"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Lato;-inkscape-font-specification:Lato;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         id="flowRoot4849"
-         xml:space="preserve"><flowRegion
-           id="flowRegion4851"><rect
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;font-family:Lato;-inkscape-font-specification:Lato;fill:#ffffff"
-             y="698.80884"
-             x="130.30968"
-             height="46.467018"
-             width="134.3503"
-             id="rect4853" /></flowRegion><flowPara
-           style="font-size:20px;line-height:1.25"
-           id="flowPara4855">Mega328P</flowPara></flowRoot>    </g>
+    <text
+       id="text4799-3"
+       y="807.75629"
+       x="108.79565"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:GentiumAlt;-inkscape-font-specification:GentiumAlt;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.5px;line-height:1.25;font-family:Lato;-inkscape-font-specification:Lato;stroke-width:1px"
+         y="807.75629"
+         x="108.79565"
+         id="tspan4801-5"
+         sodipodi:role="line">RST</tspan></text>
     <rect
-       style="opacity:1;fill:#b3b3b3;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect4883"
-       width="95.714287"
-       height="112.85714"
-       x="72.547279"
-       y="1026.6479" />
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4885"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Lato;-inkscape-font-specification:Lato;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(-437.958,531.66781)"><flowRegion
-         id="flowRegion4887"><rect
-           id="rect4889"
-           width="72.14286"
-           height="42.142857"
-           x="538.57141"
-           y="538.07648"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Lato;-inkscape-font-specification:Lato" /></flowRegion><flowPara
-         id="flowPara4891"
-         style="font-weight:bold;font-size:20px;line-height:1.25">USB</flowPara></flowRoot>    <circle
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.54933405;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4817"
+       width="56.164955"
+       height="32.593525"
+       x="92.321953"
+       y="814.27972" />
+    <circle
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4825"
+       cx="120.40444"
+       cy="830.57648"
+       r="11.156113" />
+    <circle
        style="opacity:1;fill:#edd900;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="circle4722"
        cx="-96.511993"
@@ -1005,35 +952,7 @@
            y="662.51678"
            style="font-weight:bold;font-size:25px;line-height:1.25;font-family:sans-serif;fill:#ffffff">0</tspan></text>
     </g>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4706"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(179.84087,684.27356)"><flowRegion
-         id="flowRegion4708"
-         style="font-family:sans-serif"><rect
-           id="rect4710"
-           width="269.24429"
-           height="23.981113"
-           x="-554.28571"
-           y="-40.228745"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         id="flowPara4712"
-         style="font-size:15px;line-height:1.25;font-family:sans-serif">Software Rx of downstream device</flowPara></flowRoot>    <flowRoot
-       transform="translate(181.10064,713.40619)"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="flowRoot4659"
-       xml:space="preserve"><flowRegion
-         id="flowRegion4661"
-         style="font-family:sans-serif"><rect
-           y="-40.228745"
-           x="-554.28571"
-           height="23.981113"
-           width="269.24429"
-           id="rect4663"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         style="font-size:15px;line-height:1.25;font-family:sans-serif"
-         id="flowPara4665">Software Tx of downstream device</flowPara></flowRoot>    <circle
+    <circle
        r="9.3439112"
        cy="828.20001"
        cx="-96.511993"
@@ -1178,35 +1097,7 @@
          d="m -356.6772,880.96527 0,11"
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4706-3"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(196.21783,857.61547)"><flowRegion
-         id="flowRegion4708-6"
-         style="font-family:sans-serif"><rect
-           id="rect4710-7"
-           width="657.14288"
-           height="54.28569"
-           x="-554.28571"
-           y="-40.228745"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         id="flowPara4712-5"
-         style="font-size:15px;line-height:1.25;font-family:sans-serif">Hardware Tx of upstream device</flowPara></flowRoot>    <flowRoot
-       transform="translate(194.95806,886.7481)"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="flowRoot4714"
-       xml:space="preserve"><flowRegion
-         id="flowRegion4716"
-         style="font-family:sans-serif"><rect
-           y="-40.228745"
-           x="-554.28571"
-           height="54.28569"
-           width="657.14288"
-           id="rect4718"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         style="font-size:15px;line-height:1.25;font-family:sans-serif"
-         id="flowPara4720">Hardware Rx of upstream device</flowPara></flowRoot>    <circle
+    <circle
        r="9.3439112"
        cy="653.40424"
        cx="337.32086"
@@ -1242,35 +1133,7 @@
        id="path4718"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
-    <flowRoot
-       transform="translate(907.47776,683.76848)"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="flowRoot4739"
-       xml:space="preserve"><flowRegion
-         id="flowRegion4741"
-         style="font-family:sans-serif"><rect
-           y="-40.228745"
-           x="-554.28571"
-           height="23.981113"
-           width="269.24429"
-           id="rect4743"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         style="font-size:15px;line-height:1.25;font-family:sans-serif"
-         id="flowPara4745">Power source</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4747"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(908.10764,713.40619)"><flowRegion
-         id="flowRegion4749"
-         style="font-family:sans-serif"><rect
-           id="rect4751"
-           width="66.387146"
-           height="21.838257"
-           x="-554.28571"
-           y="-40.228745"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         id="flowPara4753"
-         style="font-size:15px;line-height:1.25;font-family:sans-serif">Ground</flowPara></flowRoot>    <g
+    <g
        id="g5839">
       <path
          inkscape:transform-center-y="1.6748169e-05"
@@ -1351,54 +1214,158 @@
         </g>
       </g>
     </g>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5351"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(374.68838,957.59365)"><flowRegion
-         id="flowRegion5353"
-         style="font-family:sans-serif"><rect
-           id="rect5355"
-           width="34.181828"
-           height="21.75878"
-           x="-554.28571"
-           y="-40.228745"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         id="flowPara5357"
-         style="font-size:15px;line-height:1.25;font-family:sans-serif">LED</flowPara></flowRoot>    <flowRoot
-       transform="translate(272.16278,957.71816)"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="flowRoot5377"
-       xml:space="preserve"><flowRegion
-         id="flowRegion5379"
-         style="font-family:sans-serif"><rect
-           y="-40.228745"
-           x="-554.28571"
-           height="28.75878"
-           width="80.681824"
-           id="rect5381"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         style="font-size:15px;line-height:1.25;font-family:sans-serif"
-         id="flowPara5383">Resistor</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5385"
-       style="font-style:normal;font-weight:normal;line-height:0.01%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(193.16661,957.71816)"><flowRegion
-         id="flowRegion5387"
-         style="font-family:sans-serif"><rect
-           id="rect5389"
-           width="80.681824"
-           height="28.75878"
-           x="-554.28571"
-           y="-40.228745"
-           style="font-family:sans-serif" /></flowRegion><flowPara
-         id="flowPara5391"
-         style="font-size:15px;line-height:1.25;font-family:sans-serif">Ground</flowPara></flowRoot>    <rect
+    <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:4.99687481;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect257"
        width="52.409843"
        height="17.34375"
        x="-276.32343"
        y="877.7934" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-375.14841"
+       y="658.99628"
+       id="text398"><tspan
+         sodipodi:role="line"
+         id="tspan396"
+         x="-375.14841"
+         y="658.99628"
+         style="font-size:15px;stroke-width:0.9375px">Software Rx of downstream device</tspan></text>
+    <text
+       id="text402"
+       y="688.12891"
+       x="-373.88864"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:15px;stroke-width:0.9375px"
+         y="688.12891"
+         x="-373.88864"
+         id="tspan400"
+         sodipodi:role="line">Software Tx of downstream device</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-380.21677"
+       y="833.79205"
+       id="text406"><tspan
+         sodipodi:role="line"
+         id="tspan404"
+         x="-380.21677"
+         y="833.79205"
+         style="font-size:15px;stroke-width:0.9375px">Hardware Tx of downstream device</tspan></text>
+    <text
+       id="text410"
+       y="862.92468"
+       x="-381.47653"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:15px;stroke-width:0.9375px"
+         y="862.92468"
+         x="-381.47653"
+         id="tspan408"
+         sodipodi:role="line">Hardware Rx of downstream device</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-361.11856"
+       y="933.23718"
+       id="text414"><tspan
+         sodipodi:role="line"
+         id="tspan412"
+         x="-361.11856"
+         y="933.23718"
+         style="font-size:15px;stroke-width:0.9375px">Ground</tspan></text>
+    <text
+       id="text418"
+       y="933.23718"
+       x="-280.86191"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:15px;stroke-width:0.9375px"
+         y="933.23718"
+         x="-280.86191"
+         id="tspan416"
+         sodipodi:role="line">Resistor</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-179.59677"
+       y="933.11267"
+       id="text422"><tspan
+         sodipodi:role="line"
+         id="tspan420"
+         x="-179.59677"
+         y="933.11267"
+         style="font-size:15px;stroke-width:0.9375px">LED</tspan></text>
+    <text
+       id="text418-3"
+       y="658.76556"
+       x="359.95953"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:15px;stroke-width:0.9375px"
+         y="658.76556"
+         x="359.95953"
+         id="tspan416-6"
+         sodipodi:role="line">Power source</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="360.58942"
+       y="688.12891"
+       id="text444"><tspan
+         sodipodi:role="line"
+         id="tspan442"
+         x="360.58942"
+         y="688.12891"
+         style="font-size:15px;stroke-width:0.9375px">Ground</tspan></text>
+    <g
+       id="g544">
+      <g
+         transform="matrix(0.88003087,0,0,0.88003087,-172.06518,550.58567)"
+         id="g4876">
+        <rect
+           style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:13.90660858;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect4839"
+           width="78.962837"
+           height="73.9832"
+           x="498.93674"
+           y="31.426575"
+           transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="80.626602"
+         y="932.21155"
+         id="text418-3-6"><tspan
+           sodipodi:role="line"
+           id="tspan416-6-2"
+           x="80.626602"
+           y="932.21155"
+           style="font-size:15px;fill:#ffffff;stroke-width:0.9375px">Mega328P</tspan></text>
+    </g>
+    <g
+       id="g549">
+      <rect
+         y="1026.6479"
+         x="72.547279"
+         height="112.85714"
+         width="95.714287"
+         id="rect4883"
+         style="opacity:1;fill:#b3b3b3;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.9375px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         x="104.35706"
+         y="1088.5367"
+         id="text418-3-6-9"><tspan
+           sodipodi:role="line"
+           id="tspan416-6-2-1"
+           x="104.35706"
+           y="1088.5367"
+           style="font-size:15px;fill:#000000;stroke-width:0.9375px">USB </tspan></text>
+    </g>
   </g>
 </svg>
