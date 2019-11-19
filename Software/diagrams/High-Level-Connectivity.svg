@@ -332,9 +332,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
+     inkscape:zoom="2"
      inkscape:cx="595.57"
-     inkscape:cy="99.359832"
+     inkscape:cy="139.35983"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -356,7 +356,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -595,7 +595,7 @@
          style="font-size:5.64444447px;line-height:50%;text-align:center;text-anchor:middle;stroke-width:0.26458332px"
          y="127.00338"
          x="175.9792"
-         sodipodi:role="line">UART</tspan><tspan
+         sodipodi:role="line">USB (UART)</tspan><tspan
          id="tspan13712"
          style="font-size:5.64444447px;line-height:50%;text-align:center;text-anchor:middle;stroke-width:0.26458332px"
          y="132.34328"
