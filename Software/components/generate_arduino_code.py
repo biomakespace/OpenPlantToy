@@ -12,7 +12,7 @@ includes = [
 serial_pins = {
                 "0" : {
                         "Rx" : 4 ,
-                        "Tx" : 5
+                        "Tx" : 3
                       } ,
                 "1" : {
                         "Rx" : 7 ,

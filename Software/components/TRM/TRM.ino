@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-#define softwareSerialTx0 5
+#define softwareSerialTx0 3
 #define softwareSerialRx0 4
 #define unitId "TRM"
 
