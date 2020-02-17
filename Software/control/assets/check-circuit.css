@@ -1,0 +1,22 @@
+:root {
+  --background-colour: black;
+  --foreground-colour: white;
+}
+
+html {
+  text-align: center;
+  font-family: sans-serif;
+  color: var(--foreground-colour);
+  background-color: var(--background-colour);
+}
+
+.component {
+  border-style: solid;
+  border-width: 5px;
+  border-color: var(--foreground-colour);
+}
+
+.connector {
+  stroke: var(--foreground-colour);
+  stroke-width: 5px;
+}
