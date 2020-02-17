@@ -160,6 +160,8 @@ void sendCommandUpstream() {
   for (byte i = 0; i < lastReceivedCommandPointer; i++) {
     upstreamSerial.write(lastReceivedCommand[i]);
   }
+  // Remember to send stop byte
+  upstreamSerial.write(";");
 }
 
 /*
@@ -439,5 +441,5 @@ void loop() {
   if (pollingDue()) {
     pollComponents();
   }
-
+  
 }
