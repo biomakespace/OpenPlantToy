@@ -159,7 +159,11 @@ class CircuitChecker:
             pass
 
         # Get any received response, and decode from bytes to string
-        assembled_circuit = self.parse_responses(CircuitChecker.connection.read(100).decode("ascii"))
+        # Try except in case there are weird bytes
+        try:
+            assembled_circuit = self.parse_responses(CircuitChecker.connection.read(100).decode("ascii"))
+        except UnicodeDecodeError:
+            assembled_circuit = self.parse_responses("")
 
         # TODO REMOVE (DEBUG)
         # print("From circuit: ", assembled_circuit.hash())
