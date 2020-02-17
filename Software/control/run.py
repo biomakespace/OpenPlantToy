@@ -23,15 +23,20 @@ def run():
     # circuit which is "correct"
     correct_circuit = TargetCircuit()
 
+    # correct_circuit.add_connection(
+    #     Connection("5UT", "FRT"),
+    #     "What would you expect to find after the leader sequence?"
+    # )
+
     correct_circuit.add_connection(
-        Connection("5UT", "FRT"),
+        Connection("3UT", "5UT"),
         "What would you expect to find after the leader sequence?"
     )
 
-    correct_circuit.add_connection(
-        Connection("FRT", "3UT"),
-        "What must follow the translation termination codon?"
-    )
+    # correct_circuit.add_connection(
+    #     Connection("FRT", "3UT"),
+    #     "What must follow the translation termination codon?"
+    # )
 
     correct_circuit.add_connection(
         Connection("3UT", "TRM"),
