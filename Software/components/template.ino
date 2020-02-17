@@ -16,6 +16,9 @@ void setup() {
    * between nano and upstream source
    */
   upstreamSerial.begin( baudRate ) ;
+
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
   
 }
 

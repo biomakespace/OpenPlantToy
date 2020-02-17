@@ -4,7 +4,7 @@
 #define softwareSerialRx0 4
 #define unitId "TRM"
 
-#define ledPin 6
+#define ledPin 2
 
 #define resetLight 13
 
@@ -42,6 +42,9 @@ void setup() {
    * between nano and upstream source
    */
   upstreamSerial.begin( baudRate ) ;
+
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
   
 }
 

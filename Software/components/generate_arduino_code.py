@@ -24,7 +24,7 @@ serial_pins = {
 reset_pin = 13
 
 #LED light pin
-led_pin = 6
+led_pin = 2
 
 #Baud rate
 baud_rate = 4800
